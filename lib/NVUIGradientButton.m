@@ -9,6 +9,10 @@
 
 @interface NVUIGradientButton ()
 - (void)performDefaultInit;
+- (UIColor *)borderColorAccordingToCurrentState;
+- (UIColor *)textColorAccordingToCurrentState;
+- (UIColor *)textShadowColorAccordingToCurrentState;
+- (NSString *)textAccordingToCurrentState;
 @end
 
 
@@ -52,8 +56,8 @@
 
 #pragma mark - Creation
 
-#define NVUIGradientButtonDefaultCorderRadius	5.0
-#define NVUIGradientButtonDefaultBorderWidth	1.0
+#define NVUIGradientButtonDefaultCorderRadius	10.0
+#define NVUIGradientButtonDefaultBorderWidth	2.0
 
 - (void)performDefaultInit
 {
@@ -69,6 +73,9 @@
 	_textShadowColor = [[UIColor darkGrayColor] retain];
 	_highlightedTextShadowColor = [_textShadowColor retain];
 	_disabledTextShadowColor = [_textShadowColor retain];
+	
+	self.opaque = NO;
+	self.backgroundColor = [UIColor clearColor];
 }
 
 #pragma mark Designated Initializer
@@ -229,19 +236,81 @@
 }
 
 
+- (UIColor *)borderColorAccordingToCurrentState
+{	
+	if (self.state & UIControlStateDisabled)
+		return _disabledBorderColor;
+	
+	if (self.state & UIControlStateHighlighted || self.state & UIControlStateSelected)
+		return _highlightedBorderColor;
+	
+	return _borderColor;
+}
+
+
+- (UIColor *)textColorAccordingToCurrentState
+{
+	if (self.state & UIControlStateDisabled)
+		return _disabledTextColor;
+	
+	if (self.state & UIControlStateHighlighted || self.state & UIControlStateSelected)
+		return _highlightedTextColor;
+	
+	return _textColor;
+}
+
+
+- (UIColor *)textShadowColorAccordingToCurrentState
+{
+	if (self.state & UIControlStateDisabled)
+		return _disabledTextShadowColor;
+	
+	if (self.state & UIControlStateHighlighted || self.state & UIControlStateSelected)
+		return _highlightedTextShadowColor;
+	
+	return _textShadowColor;
+}
+
+
+- (NSString *)textAccordingToCurrentState
+{
+	if (self.state & UIControlStateDisabled)
+		return _disabledText;
+	
+	if (self.state & UIControlStateHighlighted || self.state & UIControlStateSelected)
+		return _highlightedText;
+	
+	return _text;
+}
+
+
 #pragma mark - Drawing
 
 - (void)drawRect:(CGRect)rect
 {
     CGContextRef ctx = UIGraphicsGetCurrentContext();
+		
+	UIBezierPath *path = [UIBezierPath bezierPathWithRect:self.bounds];
 	
-	UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:self.bounds cornerRadius:_cornerRadius];
+	path = [UIBezierPath bezierPathWithRoundedRect:self.bounds cornerRadius:_cornerRadius];
 	
 	[path addClip];
 	
-	UIColor *borderColor = _borderColor;
-	UIColor *textColor = _textColor;
+	UIColor *borderColor = [self borderColorAccordingToCurrentState];
+	UIColor *textColor = [self textColorAccordingToCurrentState];
+	UIColor *textShadowColor = [self textShadowColorAccordingToCurrentState];
+	NSString *text = [self textAccordingToCurrentState];
 	
+	// Draw background
+	UIColor *nonGradient = [UIColor whiteColor];
+	[nonGradient set];
+	[path fill];
+	
+	// Draw text
+	
+	
+	// Draw border
+	[borderColor set];
 	[path stroke];
 }
 

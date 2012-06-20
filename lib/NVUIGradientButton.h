@@ -9,8 +9,8 @@
 
 @interface NVUIGradientButton : UIControl
 
-@property (nonatomic) CGFloat cornerRadius; // Default to 5.0
-@property (nonatomic) CGFloat borderWidth; // Default to 1.0
+@property (nonatomic) CGFloat cornerRadius; // Default to 10.0
+@property (nonatomic) CGFloat borderWidth; // Default to 2.0
 @property (strong, nonatomic) UIColor *borderColor; // Default to darkGray
 @property (strong, nonatomic) UIColor *highlightedBorderColor; // Default to borderColor
 @property (strong, nonatomic) UIColor *disabledBorderColor; // Default to borderColor
