@@ -1,0 +1,311 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		371F8EC41591ED3E00A6082F /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 371F8EC31591ED3E00A6082F /* UIKit.framework */; };
+		371F8EC61591ED3E00A6082F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 371F8EC51591ED3E00A6082F /* Foundation.framework */; };
+		371F8EC81591ED3E00A6082F /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 371F8EC71591ED3E00A6082F /* CoreGraphics.framework */; };
+		371F8ECE1591ED3E00A6082F /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 371F8ECC1591ED3E00A6082F /* InfoPlist.strings */; };
+		371F8ED01591ED3E00A6082F /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 371F8ECF1591ED3E00A6082F /* main.m */; };
+		371F8ED41591ED3F00A6082F /* NVAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 371F8ED31591ED3F00A6082F /* NVAppDelegate.m */; };
+		371F8ED71591ED3F00A6082F /* NVViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 371F8ED61591ED3F00A6082F /* NVViewController.m */; };
+		371F8EDA1591ED3F00A6082F /* NVViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 371F8ED81591ED3F00A6082F /* NVViewController_iPhone.xib */; };
+		371F8EDD1591ED3F00A6082F /* NVViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 371F8EDB1591ED3F00A6082F /* NVViewController_iPad.xib */; };
+		371F8EEA1591EFA000A6082F /* NVUIGradientButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 371F8EE91591EFA000A6082F /* NVUIGradientButton.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		371F8EBF1591ED3E00A6082F /* NVUIGradientButtonSample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NVUIGradientButtonSample.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		371F8EC31591ED3E00A6082F /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		371F8EC51591ED3E00A6082F /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		371F8EC71591ED3E00A6082F /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		371F8ECB1591ED3E00A6082F /* NVUIGradientButtonSample-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "NVUIGradientButtonSample-Info.plist"; sourceTree = "<group>"; };
+		371F8ECD1591ED3E00A6082F /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		371F8ECF1591ED3E00A6082F /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		371F8ED11591ED3F00A6082F /* NVUIGradientButtonSample-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NVUIGradientButtonSample-Prefix.pch"; sourceTree = "<group>"; };
+		371F8ED21591ED3F00A6082F /* NVAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVAppDelegate.h; sourceTree = "<group>"; };
+		371F8ED31591ED3F00A6082F /* NVAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NVAppDelegate.m; sourceTree = "<group>"; };
+		371F8ED51591ED3F00A6082F /* NVViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVViewController.h; sourceTree = "<group>"; };
+		371F8ED61591ED3F00A6082F /* NVViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NVViewController.m; sourceTree = "<group>"; };
+		371F8ED91591ED3F00A6082F /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/NVViewController_iPhone.xib; sourceTree = "<group>"; };
+		371F8EDC1591ED3F00A6082F /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/NVViewController_iPad.xib; sourceTree = "<group>"; };
+		371F8EE81591EFA000A6082F /* NVUIGradientButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NVUIGradientButton.h; sourceTree = "<group>"; };
+		371F8EE91591EFA000A6082F /* NVUIGradientButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NVUIGradientButton.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		371F8EBC1591ED3E00A6082F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				371F8EC41591ED3E00A6082F /* UIKit.framework in Frameworks */,
+				371F8EC61591ED3E00A6082F /* Foundation.framework in Frameworks */,
+				371F8EC81591ED3E00A6082F /* CoreGraphics.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		371F8EB41591ED3D00A6082F = {
+			isa = PBXGroup;
+			children = (
+				371F8EE31591ED5300A6082F /* lib */,
+				371F8EC91591ED3E00A6082F /* NVUIGradientButtonSample */,
+				371F8EC21591ED3E00A6082F /* Frameworks */,
+				371F8EC01591ED3E00A6082F /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		371F8EC01591ED3E00A6082F /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				371F8EBF1591ED3E00A6082F /* NVUIGradientButtonSample.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		371F8EC21591ED3E00A6082F /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				371F8EC31591ED3E00A6082F /* UIKit.framework */,
+				371F8EC51591ED3E00A6082F /* Foundation.framework */,
+				371F8EC71591ED3E00A6082F /* CoreGraphics.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		371F8EC91591ED3E00A6082F /* NVUIGradientButtonSample */ = {
+			isa = PBXGroup;
+			children = (
+				371F8ED21591ED3F00A6082F /* NVAppDelegate.h */,
+				371F8ED31591ED3F00A6082F /* NVAppDelegate.m */,
+				371F8ED51591ED3F00A6082F /* NVViewController.h */,
+				371F8ED61591ED3F00A6082F /* NVViewController.m */,
+				371F8ED81591ED3F00A6082F /* NVViewController_iPhone.xib */,
+				371F8EDB1591ED3F00A6082F /* NVViewController_iPad.xib */,
+				371F8ECA1591ED3E00A6082F /* Supporting Files */,
+			);
+			path = NVUIGradientButtonSample;
+			sourceTree = "<group>";
+		};
+		371F8ECA1591ED3E00A6082F /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				371F8ECB1591ED3E00A6082F /* NVUIGradientButtonSample-Info.plist */,
+				371F8ECC1591ED3E00A6082F /* InfoPlist.strings */,
+				371F8ECF1591ED3E00A6082F /* main.m */,
+				371F8ED11591ED3F00A6082F /* NVUIGradientButtonSample-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		371F8EE31591ED5300A6082F /* lib */ = {
+			isa = PBXGroup;
+			children = (
+				371F8EE81591EFA000A6082F /* NVUIGradientButton.h */,
+				371F8EE91591EFA000A6082F /* NVUIGradientButton.m */,
+			);
+			name = lib;
+			path = ../lib;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		371F8EBE1591ED3E00A6082F /* NVUIGradientButtonSample */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 371F8EE01591ED3F00A6082F /* Build configuration list for PBXNativeTarget "NVUIGradientButtonSample" */;
+			buildPhases = (
+				371F8EBB1591ED3E00A6082F /* Sources */,
+				371F8EBC1591ED3E00A6082F /* Frameworks */,
+				371F8EBD1591ED3E00A6082F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = NVUIGradientButtonSample;
+			productName = NVUIGradientButtonSample;
+			productReference = 371F8EBF1591ED3E00A6082F /* NVUIGradientButtonSample.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		371F8EB61591ED3D00A6082F /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				CLASSPREFIX = NV;
+				LastUpgradeCheck = 0430;
+				ORGANIZATIONNAME = "Chlorophyll Vision";
+			};
+			buildConfigurationList = 371F8EB91591ED3D00A6082F /* Build configuration list for PBXProject "NVUIGradientButtonSample" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 371F8EB41591ED3D00A6082F;
+			productRefGroup = 371F8EC01591ED3E00A6082F /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				371F8EBE1591ED3E00A6082F /* NVUIGradientButtonSample */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		371F8EBD1591ED3E00A6082F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				371F8ECE1591ED3E00A6082F /* InfoPlist.strings in Resources */,
+				371F8EDA1591ED3F00A6082F /* NVViewController_iPhone.xib in Resources */,
+				371F8EDD1591ED3F00A6082F /* NVViewController_iPad.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		371F8EBB1591ED3E00A6082F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				371F8ED01591ED3E00A6082F /* main.m in Sources */,
+				371F8ED41591ED3F00A6082F /* NVAppDelegate.m in Sources */,
+				371F8ED71591ED3F00A6082F /* NVViewController.m in Sources */,
+				371F8EEA1591EFA000A6082F /* NVUIGradientButton.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		371F8ECC1591ED3E00A6082F /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				371F8ECD1591ED3E00A6082F /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		371F8ED81591ED3F00A6082F /* NVViewController_iPhone.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				371F8ED91591ED3F00A6082F /* en */,
+			);
+			name = NVViewController_iPhone.xib;
+			sourceTree = "<group>";
+		};
+		371F8EDB1591ED3F00A6082F /* NVViewController_iPad.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				371F8EDC1591ED3F00A6082F /* en */,
+			);
+			name = NVViewController_iPad.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		371F8EDE1591ED3F00A6082F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		371F8EDF1591ED3F00A6082F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		371F8EE11591ED3F00A6082F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "NVUIGradientButtonSample/NVUIGradientButtonSample-Prefix.pch";
+				INFOPLIST_FILE = "NVUIGradientButtonSample/NVUIGradientButtonSample-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		371F8EE21591ED3F00A6082F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "NVUIGradientButtonSample/NVUIGradientButtonSample-Prefix.pch";
+				INFOPLIST_FILE = "NVUIGradientButtonSample/NVUIGradientButtonSample-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		371F8EB91591ED3D00A6082F /* Build configuration list for PBXProject "NVUIGradientButtonSample" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				371F8EDE1591ED3F00A6082F /* Debug */,
+				371F8EDF1591ED3F00A6082F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		371F8EE01591ED3F00A6082F /* Build configuration list for PBXNativeTarget "NVUIGradientButtonSample" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				371F8EE11591ED3F00A6082F /* Debug */,
+				371F8EE21591ED3F00A6082F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 371F8EB61591ED3D00A6082F /* Project object */;
+}
