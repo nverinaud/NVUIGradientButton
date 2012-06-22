@@ -8,6 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
+#import "NVUIGradientButton.h"
+
 @interface NVViewController : UIViewController
+
+@property (strong, nonatomic) IBOutlet NVUIGradientButton *button;
 
 @end

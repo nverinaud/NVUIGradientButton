@@ -9,6 +9,7 @@
 
 @interface NVUIGradientButton ()
 - (void)performDefaultInit;
+- (BOOL)isHighlightedOrSelected;
 - (UIColor *)borderColorAccordingToCurrentState;
 - (UIColor *)textColorAccordingToCurrentState;
 - (UIColor *)textShadowColorAccordingToCurrentState;
@@ -116,7 +117,7 @@
 }
 
 
-#pragma mark - Colors
+#pragma mark - Setters
 
 - (void)setBorderColor:(UIColor *)borderColor
 {
@@ -125,11 +126,34 @@
 		[_borderColor release];
 		_borderColor = [borderColor retain];
 		
-		if (!_highlightedBorderColor)
-			_highlightedBorderColor = [_borderColor retain];
+		if (self.state & UIControlStateNormal)
+			[self setNeedsDisplay];
+	}
+}
+
+
+- (void)setHighlightedBorderColor:(UIColor *)highlightedBorderColor
+{
+	if (highlightedBorderColor != _highlightedBorderColor) 
+	{
+		[_highlightedBorderColor release];
+		_highlightedBorderColor = [highlightedBorderColor retain];
 		
-		if (!_disabledBorderColor)
-			_disabledBorderColor = [_borderColor retain];
+		if ([self isHighlightedOrSelected])
+			[self setNeedsDisplay];
+	}
+}
+
+
+- (void)setDisabledBorderColor:(UIColor *)disabledBorderColor
+{
+	if (disabledBorderColor != _disabledBorderColor) 
+	{
+		[_disabledBorderColor release];
+		_disabledBorderColor = [disabledBorderColor retain];
+		
+		if (self.state & UIControlStateDisabled)
+			[self setNeedsDisplay];
 	}
 }
 
@@ -141,11 +165,34 @@
 		[_textColor release];
 		_textColor = [textColor retain];
 		
-		if (!_highlightedTextColor)
-			_highlightedTextColor = [_textColor retain];
+		if (self.state & UIControlStateNormal)
+			[self setNeedsDisplay];
+	}
+}
+
+
+- (void)setHighlightedTextColor:(UIColor *)highlightedTextColor
+{
+	if (highlightedTextColor != _highlightedTextColor) 
+	{
+		[_highlightedTextColor release];
+		_highlightedTextColor = [highlightedTextColor retain];
 		
-		if (!_disabledTextColor)
-			_disabledTextColor = [_textColor retain];
+		if ([self isHighlightedOrSelected])
+			[self setNeedsDisplay];
+	}
+}
+
+
+- (void)setDisabledTextColor:(UIColor *)disabledTextColor
+{
+	if (disabledTextColor != _disabledTextColor) 
+	{
+		[_disabledTextColor release];
+		_disabledTextColor = [disabledTextColor retain];
+		
+		if (self.state & UIControlStateDisabled)
+			[self setNeedsDisplay];
 	}
 }
 
@@ -157,32 +204,84 @@
 		[_textShadowColor release];
 		_textShadowColor = [textShadowColor retain];
 		
-		if (!_highlightedTextShadowColor)
-			_highlightedTextShadowColor = [_textShadowColor retain];
+		if (self.state & UIControlStateNormal)
+			[self setNeedsDisplay];
+	}
+}
+
+
+- (void)setHighlightedTextShadowColor:(UIColor *)highlightedTextShadowColor
+{
+	if (highlightedTextShadowColor != _highlightedTextShadowColor) 
+	{
+		[_highlightedTextShadowColor release];
+		_highlightedTextShadowColor = [highlightedTextShadowColor retain];
 		
-		if (!_disabledTextShadowColor)
-			_disabledTextShadowColor = [_textShadowColor retain];
+		if ([self isHighlightedOrSelected])
+			[self setNeedsDisplay];
+	}
+}
+
+
+- (void)setDisabledTextShadowColor:(UIColor *)disabledTextShadowColor
+{
+	if (disabledTextShadowColor != _disabledTextShadowColor) 
+	{
+		[_disabledTextShadowColor release];
+		_disabledTextShadowColor = [disabledTextShadowColor retain];
+		
+		if (self.state & UIControlStateDisabled)
+			[self setNeedsDisplay];
 	}
 }
 
 
 - (void)setText:(NSString *)text
 {
-	if (text != _text) 
+	if (![text isEqualToString:_text])
 	{
 		[_text release];
 		_text = [text copy];
 		
-		if (!_highlightedText) 
-			_highlightedText = [_text retain];
+		if (self.state & UIControlStateNormal)
+			[self setNeedsDisplay];
+	}
+}
+
+
+- (void)setHighlightedText:(NSString *)highlightedText
+{
+	if (![highlightedText isEqualToString:_highlightedText]) 
+	{
+		[_highlightedText release];
+		_highlightedText = [highlightedText copy];
 		
-		if (!_disabledText)
-			_disabledText = [_text retain];
+		if ([self isHighlightedOrSelected])
+			[self setNeedsDisplay];
+	}
+}
+
+
+- (void)setDisabledText:(NSString *)disabledText
+{
+	if (![disabledText isEqualToString:_disabledText]) 
+	{
+		[_disabledText release];
+		_disabledText = [disabledText copy];
+		
+		if (self.state & UIControlStateDisabled)
+			[self setNeedsDisplay];
 	}
 }
 
 
 #pragma mark - Convenience configuration for states
+
+- (BOOL)isHighlightedOrSelected
+{
+	return (self.state & UIControlStateHighlighted || self.state & UIControlStateSelected);
+}
+
 
 - (void)setBorderColor:(UIColor *)borderColor forState:(UIControlState)state
 {
@@ -238,49 +337,53 @@
 
 - (UIColor *)borderColorAccordingToCurrentState
 {	
-	if (self.state & UIControlStateDisabled)
-		return _disabledBorderColor;
+	UIColor *borderColor = _borderColor;
 	
-	if (self.state & UIControlStateHighlighted || self.state & UIControlStateSelected)
-		return _highlightedBorderColor;
-	
-	return _borderColor;
+	if (!self.enabled && _disabledBorderColor)
+		borderColor = _disabledBorderColor;
+	else if ([self isHighlightedOrSelected] && _highlightedBorderColor)
+		borderColor = _highlightedBorderColor;
+		
+	return borderColor;
 }
 
 
 - (UIColor *)textColorAccordingToCurrentState
 {
-	if (self.state & UIControlStateDisabled)
-		return _disabledTextColor;
+	UIColor *textColor = _textColor;
 	
-	if (self.state & UIControlStateHighlighted || self.state & UIControlStateSelected)
-		return _highlightedTextColor;
+	if (!self.enabled && _disabledTextColor)
+		textColor = _disabledTextColor;
+	else if ([self isHighlightedOrSelected] && _highlightedTextColor)
+		textColor = _highlightedTextColor;
 	
-	return _textColor;
+	return textColor;
 }
 
 
 - (UIColor *)textShadowColorAccordingToCurrentState
 {
-	if (self.state & UIControlStateDisabled)
-		return _disabledTextShadowColor;
+	UIColor *textShadowColor = _textShadowColor;
 	
-	if (self.state & UIControlStateHighlighted || self.state & UIControlStateSelected)
-		return _highlightedTextShadowColor;
+	if (!self.enabled && _disabledTextShadowColor)
+		textShadowColor = _disabledTextShadowColor;
+	else if ([self isHighlightedOrSelected] && _highlightedTextShadowColor)
+		textShadowColor = _highlightedTextShadowColor;
 	
-	return _textShadowColor;
+	return textShadowColor;
 }
 
 
 - (NSString *)textAccordingToCurrentState
 {
-	if (self.state & UIControlStateDisabled)
-		return _disabledText;
+	NSString *text = _text;
 	
-	if (self.state & UIControlStateHighlighted || self.state & UIControlStateSelected)
-		return _highlightedText;
+	if (!self.enabled && _disabledText)
+		text = _disabledText;
+	else if ([self isHighlightedOrSelected] && _highlightedText)
+		text = _highlightedText;
 	
-	return _text;
+	return text;
 }
 
 
@@ -288,6 +391,9 @@
 
 - (void)drawRect:(CGRect)rect
 {
+	if ([self isHighlightedOrSelected]) 
+		NSLog(@"I'm selected / highlighted !");
+	
     CGContextRef ctx = UIGraphicsGetCurrentContext();
 		
 	UIBezierPath *path = [UIBezierPath bezierPathWithRect:self.bounds];
