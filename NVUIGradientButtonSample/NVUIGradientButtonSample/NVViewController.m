@@ -28,11 +28,7 @@
 {
     [super viewDidLoad];
 	
-	self.button.text = @"Normal";
-	self.button.highlightedText = @"Highlighted or Selected";
-	self.button.disabledText = @"Disabled";
-	self.button.highlightedBorderColor = [UIColor blueColor];
-	self.button.highlightedTextColor = [UIColor blueColor];
+	self.button.text = @"Default";
 }
 
 

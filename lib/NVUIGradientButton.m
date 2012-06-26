@@ -10,10 +10,13 @@
 @interface NVUIGradientButton ()
 - (void)performDefaultInit;
 - (BOOL)isHighlightedOrSelected;
+- (UIColor *)tintColorAccordingToCurrentState;
 - (UIColor *)borderColorAccordingToCurrentState;
 - (UIColor *)textColorAccordingToCurrentState;
 - (UIColor *)textShadowColorAccordingToCurrentState;
 - (NSString *)textAccordingToCurrentState;
+- (CGGradientRef)newGradientAccordingToCurrentState;
+@property (strong, nonatomic, readwrite) UILabel *titleLabel;
 @end
 
 
@@ -21,6 +24,8 @@
 
 @synthesize cornerRadius				= _cornerRadius;
 @synthesize borderWidth					= _borderWidth;
+@synthesize tintColor					= _tintColor;
+@synthesize highlightedTintColor		= _highlightedTintColor;
 @synthesize borderColor					= _borderColor;
 @synthesize highlightedBorderColor		= _highlightedBorderColor;
 @synthesize disabledBorderColor			= _disabledBorderColor;
@@ -33,11 +38,14 @@
 @synthesize text						= _text;
 @synthesize highlightedText				= _highlightedText;
 @synthesize disabledText				= _disabledText;
+@synthesize titleLabel					= _titleLabel;
 
 #pragma mark - Memory Management
 
 - (void)dealloc
 {
+	[_tintColor release];
+	[_highlightedTintColor release];
 	[_borderColor release];
 	[_highlightedBorderColor release];
 	[_disabledBorderColor release];
@@ -50,6 +58,7 @@
 	[_text release];
 	[_highlightedText release];
 	[_disabledText release];
+	[_titleLabel release];
 	
 	[super dealloc];
 }
@@ -63,17 +72,29 @@
 - (void)performDefaultInit
 {
 	// Defaults
+	CGFloat gray = 220.0/255.0;
+	_tintColor = [[UIColor alloc] initWithRed:gray green:gray blue:gray alpha:1];
+	_highlightedTintColor = [[UIColor alloc] initWithRed:0 green:(CGFloat)157/255 blue:1 alpha:1];
 	_highlightedText = [_text retain];
 	_disabledText = [_text retain];
 	_borderColor = [[UIColor darkGrayColor] retain];
-	_highlightedBorderColor = [_borderColor retain];
+	_highlightedBorderColor = [[UIColor whiteColor] retain];
 	_disabledBorderColor = [_borderColor retain];
 	_textColor = [[UIColor blackColor] retain];
-	_highlightedTextColor = [_textColor retain];
-	_disabledTextColor = [_textColor retain];
-	_textShadowColor = [[UIColor darkGrayColor] retain];
-	_highlightedTextShadowColor = [_textShadowColor retain];
+	_highlightedTextColor = [[UIColor whiteColor] retain];
+	_disabledTextColor = [[UIColor darkGrayColor] retain];
+	_textShadowColor = [[UIColor clearColor] retain];
+	_highlightedTextShadowColor = [[UIColor darkGrayColor] retain];
 	_disabledTextShadowColor = [_textShadowColor retain];
+	
+	// Label
+	_titleLabel = [[UILabel alloc] init];
+	_titleLabel.textAlignment = UITextAlignmentCenter;
+	_titleLabel.lineBreakMode = UILineBreakModeMiddleTruncation;
+	_titleLabel.numberOfLines = 1;
+	_titleLabel.font = [UIFont boldSystemFontOfSize:15.0];
+	_titleLabel.minimumFontSize = 12.0;
+	_titleLabel.shadowOffset = CGSizeMake(1, 1);
 	
 	self.opaque = NO;
 	self.backgroundColor = [UIColor clearColor];
@@ -118,6 +139,18 @@
 
 
 #pragma mark - Setters
+
+- (void)setTintColor:(UIColor *)tintColor
+{
+	if (tintColor != _tintColor) 
+	{
+		[_tintColor release];
+		_tintColor = [tintColor retain];
+		
+		[self setNeedsDisplay];
+	}
+}
+
 
 - (void)setBorderColor:(UIColor *)borderColor
 {
@@ -335,6 +368,17 @@
 }
 
 
+- (UIColor *)tintColorAccordingToCurrentState
+{
+	UIColor *tintColor = _tintColor;
+	
+	if([self isHighlightedOrSelected])
+		tintColor = _highlightedTintColor;
+	
+	return tintColor;
+}
+
+
 - (UIColor *)borderColorAccordingToCurrentState
 {	
 	UIColor *borderColor = _borderColor;
@@ -387,15 +431,59 @@
 }
 
 
+#pragma mark - Gradient
+
+- (CGGradientRef)newGradientAccordingToCurrentState
+{
+	CGGradientRef gradient = NULL;
+	
+	// Compute the colors of the gradient
+	UIColor *middleColor = [self tintColorAccordingToCurrentState];
+	
+	CGFloat red = 0, green = 0, blue = 0, alpha = 0;
+	if ([middleColor respondsToSelector:@selector(getRed:green:blue:alpha:)]) // iOS 5+
+	{
+		[middleColor getRed:&red green:&green blue:&blue alpha:&alpha];
+	}
+	else 
+	{
+		CGColorRef color = [middleColor CGColor];
+		const CGFloat *components = CGColorGetComponents(color);
+		red = components[0];
+		green = components[1];
+		blue = components[2];
+		alpha = components[3];
+	}
+	
+	CGFloat offsetColor = 50.0f/255.0f;
+	UIColor *topColor = [UIColor colorWithRed:fminf(1, red+offsetColor) green:fminf(1, green+offsetColor) blue:fminf(1, blue+offsetColor) alpha:alpha];
+	UIColor *bottomColor = [UIColor colorWithRed:fminf(1, red-offsetColor) green:fminf(1, green-offsetColor) blue:fminf(1, blue-offsetColor) alpha:alpha];
+	
+	CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+	
+	// Create an array of colors
+	CFMutableArrayRef colors = CFArrayCreateMutable(NULL, 3, NULL);
+	CFArrayAppendValue(colors, [topColor CGColor]);
+	CFArrayAppendValue(colors, [middleColor CGColor]);
+	CFArrayAppendValue(colors, [bottomColor CGColor]);
+	
+	// Create the gradient
+	gradient = CGGradientCreateWithColors(colorSpace, colors, NULL);
+	
+	// Memory free
+	CFRelease(colors);
+	CGColorSpaceRelease(colorSpace);
+	
+	return gradient;
+}
+
+
 #pragma mark - Drawing
 
 - (void)drawRect:(CGRect)rect
-{
-	if ([self isHighlightedOrSelected]) 
-		NSLog(@"I'm selected / highlighted !");
+{		
+	CGContextRef ctx = UIGraphicsGetCurrentContext();
 	
-    CGContextRef ctx = UIGraphicsGetCurrentContext();
-		
 	UIBezierPath *path = [UIBezierPath bezierPathWithRect:self.bounds];
 	
 	path = [UIBezierPath bezierPathWithRoundedRect:self.bounds cornerRadius:_cornerRadius];
@@ -408,16 +496,93 @@
 	NSString *text = [self textAccordingToCurrentState];
 	
 	// Draw background
-	UIColor *nonGradient = [UIColor whiteColor];
-	[nonGradient set];
-	[path fill];
+	CGGradientRef gradient = [self newGradientAccordingToCurrentState];
+	CGFloat midX = CGRectGetMidX(self.bounds);
+	CGFloat botY = CGRectGetMaxY(self.bounds);
+	CGPoint startPoint = CGPointMake(midX, 0);
+	CGPoint endPoint = CGPointMake(midX, botY);
+	CGContextDrawLinearGradient(ctx, gradient, startPoint, endPoint, 0);
+	CGGradientRelease(gradient);
 	
 	// Draw text
+	_titleLabel.textColor = textColor;
+	_titleLabel.shadowColor = textShadowColor;
+	_titleLabel.text = text;
 	
+	[textColor set];
+	[_titleLabel drawTextInRect:self.bounds];
 	
 	// Draw border
 	[borderColor set];
 	[path stroke];
+}
+
+
+#pragma mark - Touch Handling
+
+- (BOOL)beginTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event
+{
+	self.highlighted = YES;
+	[self setNeedsDisplay];
+	return [super beginTrackingWithTouch:touch withEvent:event];
+}
+
+
+- (BOOL)continueTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event
+{
+	self.highlighted = [self isTouchInside];
+	[self setNeedsDisplay];
+	return [super continueTrackingWithTouch:touch withEvent:event];
+}
+
+
+- (void)endTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event
+{
+	[super endTrackingWithTouch:touch withEvent:event];
+	self.highlighted = NO;
+	[self setNeedsDisplay];
+}
+
+
+- (void)cancelTrackingWithEvent:(UIEvent *)event
+{
+	[super cancelTrackingWithEvent:event];
+	self.highlighted = NO;
+	[self setNeedsDisplay];
+}
+
+
+#pragma mark - Accessibility
+
+- (BOOL)isAccessibilityElement 
+{
+    return YES;
+}    
+
+
+- (NSString *)accessibilityLabel 
+{
+    return [self textAccordingToCurrentState];
+}
+
+
+- (UIAccessibilityTraits)accessibilityTraits 
+{
+	UIAccessibilityTraits traits = UIAccessibilityTraitButton;
+	
+	if ([self isHighlightedOrSelected])
+		traits = traits >> UIAccessibilityTraitSelected;
+	
+	if (!self.enabled)
+		traits = traits >> UIAccessibilityTraitNotEnabled;
+
+    return traits;
+}
+
+
+- (NSString *)accessibilityHint 
+{
+	return [self textAccordingToCurrentState];
 }
 
 
