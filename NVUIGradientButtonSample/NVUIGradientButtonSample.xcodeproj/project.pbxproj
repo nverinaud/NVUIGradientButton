@@ -16,6 +16,9 @@
 		371F8ED71591ED3F00A6082F /* NVViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 371F8ED61591ED3F00A6082F /* NVViewController.m */; };
 		371F8EDA1591ED3F00A6082F /* NVViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 371F8ED81591ED3F00A6082F /* NVViewController_iPhone.xib */; };
 		371F8EEA1591EFA000A6082F /* NVUIGradientButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 371F8EE91591EFA000A6082F /* NVUIGradientButton.m */; };
+		3727484A1599BCB9009FD883 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 372748491599BCB9009FD883 /* README.md */; };
+		3727484D1599BCD7009FD883 /* CHANGELOG.md in Resources */ = {isa = PBXBuildFile; fileRef = 3727484B1599BCD7009FD883 /* CHANGELOG.md */; };
+		3727484E1599BCD7009FD883 /* VERSION in Resources */ = {isa = PBXBuildFile; fileRef = 3727484C1599BCD7009FD883 /* VERSION */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +37,9 @@
 		371F8ED91591ED3F00A6082F /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/NVViewController_iPhone.xib; sourceTree = "<group>"; };
 		371F8EE81591EFA000A6082F /* NVUIGradientButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NVUIGradientButton.h; sourceTree = "<group>"; };
 		371F8EE91591EFA000A6082F /* NVUIGradientButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NVUIGradientButton.m; sourceTree = "<group>"; };
+		372748491599BCB9009FD883 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = README.md; path = ../README.md; sourceTree = "<group>"; };
+		3727484B1599BCD7009FD883 /* CHANGELOG.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = CHANGELOG.md; path = ../CHANGELOG.md; sourceTree = "<group>"; };
+		3727484C1599BCD7009FD883 /* VERSION */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = VERSION; path = ../VERSION; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,6 +59,9 @@
 		371F8EB41591ED3D00A6082F = {
 			isa = PBXGroup;
 			children = (
+				3727484B1599BCD7009FD883 /* CHANGELOG.md */,
+				3727484C1599BCD7009FD883 /* VERSION */,
+				372748491599BCB9009FD883 /* README.md */,
 				371F8EE31591ED5300A6082F /* lib */,
 				371F8EC91591ED3E00A6082F /* NVUIGradientButtonSample */,
 				371F8EC21591ED3E00A6082F /* Frameworks */,
@@ -166,6 +175,9 @@
 			files = (
 				371F8ECE1591ED3E00A6082F /* InfoPlist.strings in Resources */,
 				371F8EDA1591ED3F00A6082F /* NVViewController_iPhone.xib in Resources */,
+				3727484A1599BCB9009FD883 /* README.md in Resources */,
+				3727484D1599BCD7009FD883 /* CHANGELOG.md in Resources */,
+				3727484E1599BCD7009FD883 /* VERSION in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
