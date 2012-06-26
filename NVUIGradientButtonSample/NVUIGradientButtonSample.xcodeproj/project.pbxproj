@@ -19,6 +19,7 @@
 		3727484A1599BCB9009FD883 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 372748491599BCB9009FD883 /* README.md */; };
 		3727484D1599BCD7009FD883 /* CHANGELOG.md in Resources */ = {isa = PBXBuildFile; fileRef = 3727484B1599BCD7009FD883 /* CHANGELOG.md */; };
 		3727484E1599BCD7009FD883 /* VERSION in Resources */ = {isa = PBXBuildFile; fileRef = 3727484C1599BCD7009FD883 /* VERSION */; };
+		37CD0DA61599DCDD0085AD2F /* LICENSE.md in Resources */ = {isa = PBXBuildFile; fileRef = 37CD0DA51599DCDD0085AD2F /* LICENSE.md */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,6 +41,7 @@
 		372748491599BCB9009FD883 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		3727484B1599BCD7009FD883 /* CHANGELOG.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = CHANGELOG.md; path = ../CHANGELOG.md; sourceTree = "<group>"; };
 		3727484C1599BCD7009FD883 /* VERSION */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = VERSION; path = ../VERSION; sourceTree = "<group>"; };
+		37CD0DA51599DCDD0085AD2F /* LICENSE.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = LICENSE.md; path = ../LICENSE.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,9 +61,10 @@
 		371F8EB41591ED3D00A6082F = {
 			isa = PBXGroup;
 			children = (
-				3727484B1599BCD7009FD883 /* CHANGELOG.md */,
 				3727484C1599BCD7009FD883 /* VERSION */,
+				37CD0DA51599DCDD0085AD2F /* LICENSE.md */,
 				372748491599BCB9009FD883 /* README.md */,
+				3727484B1599BCD7009FD883 /* CHANGELOG.md */,
 				371F8EE31591ED5300A6082F /* lib */,
 				371F8EC91591ED3E00A6082F /* NVUIGradientButtonSample */,
 				371F8EC21591ED3E00A6082F /* Frameworks */,
@@ -178,6 +181,7 @@
 				3727484A1599BCB9009FD883 /* README.md in Resources */,
 				3727484D1599BCD7009FD883 /* CHANGELOG.md in Resources */,
 				3727484E1599BCD7009FD883 /* VERSION in Resources */,
+				37CD0DA61599DCDD0085AD2F /* LICENSE.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
