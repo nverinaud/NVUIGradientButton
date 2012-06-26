@@ -13,5 +13,19 @@
 @interface NVViewController : UIViewController
 
 @property (strong, nonatomic) IBOutlet NVUIGradientButton *button;
+@property (strong, nonatomic) IBOutlet NVUIGradientButton *disabledButton;
+@property (strong, nonatomic) IBOutlet NVUIGradientButton *redButton;
+@property (strong, nonatomic) IBOutlet NVUIGradientButton *darkBlueButton;
+@property (strong, nonatomic) IBOutlet NVUIGradientButton *dynamicButton;
+
+@property (strong, nonatomic) IBOutlet UISlider *redSlider;
+@property (strong, nonatomic) IBOutlet UILabel *redValueLabel;
+@property (strong, nonatomic) IBOutlet UISlider *blueSlider;
+@property (strong, nonatomic) IBOutlet UILabel *blueValueLabel;
+@property (strong, nonatomic) IBOutlet UISlider *greenSlider;
+@property (strong, nonatomic) IBOutlet UILabel *greenValueLabel;
+
+- (IBAction)sliderValueChanged;
+- (IBAction)segmentedControlValueChanged:(UISegmentedControl *)sender;
 
 @end
