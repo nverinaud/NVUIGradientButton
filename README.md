@@ -2,7 +2,7 @@
 
 A beautiful customizable iOS button with gradient.
 
-![A screenshot rendering NVUIGradient buttons](/nverinaud/NVUIGradientButton/blob/master/images/screen.png)
+![A screenshot rendering NVUIGradient buttons](/nverinaud/NVUIGradientButton/raw/master/images/screen.png)
 
 ## Usage
 
