@@ -9,6 +9,7 @@
 
 @interface NVUIGradientButton ()
 - (void)performDefaultInit;
+- (void)updateAccordingToStyle;
 - (BOOL)isHighlightedOrSelected;
 - (UIColor *)tintColorAccordingToCurrentState;
 - (UIColor *)borderColorAccordingToCurrentState;
@@ -21,21 +22,6 @@
 
 
 @implementation NVUIGradientButton
-
-@synthesize cornerRadius				= _cornerRadius;
-@synthesize borderWidth					= _borderWidth;
-@synthesize tintColor					= _tintColor;
-@synthesize highlightedTintColor		= _highlightedTintColor;
-@synthesize borderColor					= _borderColor;
-@synthesize highlightedBorderColor		= _highlightedBorderColor;
-@synthesize textColor					= _textColor;
-@synthesize highlightedTextColor		= _highlightedTextColor;
-@synthesize textShadowColor				= _textShadowColor;
-@synthesize highlightedTextShadowColor	= _highlightedTextShadowColor;
-@synthesize text						= _text;
-@synthesize highlightedText				= _highlightedText;
-@synthesize disabledText				= _disabledText;
-@synthesize titleLabel					= _titleLabel;
 
 #pragma mark - Memory Management
 
@@ -66,17 +52,8 @@
 - (void)performDefaultInit
 {
 	// Defaults
-	CGFloat gray = 220.0/255.0;
-	_tintColor = [[UIColor alloc] initWithRed:gray green:gray blue:gray alpha:1];
-	_highlightedTintColor = [[UIColor alloc] initWithRed:0 green:(CGFloat)157/255 blue:1 alpha:1];
 	_highlightedText = [_text retain];
 	_disabledText = [_text retain];
-	_borderColor = [[UIColor darkGrayColor] retain];
-	_highlightedBorderColor = [[UIColor whiteColor] retain];
-	_textColor = [[UIColor blackColor] retain];
-	_highlightedTextColor = [[UIColor whiteColor] retain];
-	_textShadowColor = [[UIColor clearColor] retain];
-	_highlightedTextShadowColor = [[UIColor darkGrayColor] retain];
 	
 	// Label
 	_titleLabel = [[UILabel alloc] init];
@@ -91,27 +68,90 @@
 	self.backgroundColor = [UIColor clearColor];
 }
 
-#pragma mark Designated Initializer
 
-- (id)initWithFrame:(CGRect)frame cornerRadius:(CGFloat)cornerRadius borderWidth:(CGFloat)borderWidth andText:(NSString *)text
+- (void)updateAccordingToStyle
+{
+	switch (_style)
+	{
+		case NVUIGradientButtonStyleBlackOpaque:
+		{
+			_tintColor = [[UIColor alloc] initWithRed:0 green:0 blue:0 alpha:1];
+			_highlightedTintColor = [[UIColor alloc] initWithRed:(CGFloat)3/255 green:(CGFloat)112/255 blue:(CGFloat)236/255 alpha:1];
+			_borderColor = [[UIColor whiteColor] retain];
+			_highlightedBorderColor = [[UIColor whiteColor] retain];
+			_textColor = [[UIColor whiteColor] retain];
+			_highlightedTextColor = [[UIColor whiteColor] retain];
+			_textShadowColor = [[UIColor clearColor] retain];
+			_highlightedTextShadowColor = [[UIColor clearColor] retain];
+			break;
+		}
+			
+		case NVUIGradientButtonStyleBlackTranslucent:
+		{
+			_tintColor = [[UIColor alloc] initWithRed:0 green:0 blue:0 alpha:0.7];
+			_highlightedTintColor = [[UIColor alloc] initWithRed:(CGFloat)3/255 green:(CGFloat)112/255 blue:(CGFloat)236/255 alpha:0.7];
+			_borderColor = [[UIColor whiteColor] retain];
+			_highlightedBorderColor = [[UIColor whiteColor] retain];
+			_textColor = [[UIColor whiteColor] retain];
+			_highlightedTextColor = [[UIColor whiteColor] retain];
+			_textShadowColor = [[UIColor clearColor] retain];
+			_highlightedTextShadowColor = [[UIColor clearColor] retain];
+			break;
+		}
+			
+		case NVUIGradientButtonStyleDefault:
+		{
+			CGFloat gray = 220.0/255.0;
+			_tintColor = [[UIColor alloc] initWithRed:gray green:gray blue:gray alpha:1];
+			_highlightedTintColor = [[UIColor alloc] initWithRed:0 green:(CGFloat)157/255 blue:1 alpha:1];
+			_borderColor = [[UIColor darkGrayColor] retain];
+			_highlightedBorderColor = [[UIColor whiteColor] retain];
+			_textColor = [[UIColor blackColor] retain];
+			_highlightedTextColor = [[UIColor whiteColor] retain];
+			_textShadowColor = [[UIColor clearColor] retain];
+			_highlightedTextShadowColor = [[UIColor darkGrayColor] retain];
+			break;
+		}
+	}
+}
+
+#pragma mark Designated initializer
+
+- (id)initWithFrame:(CGRect)frame style:(NVUIGradientButtonStyle)style cornerRadius:(CGFloat)cornerRadius borderWidth:(CGFloat)borderWidth andText:(NSString *)text
 {
 	self = [super initWithFrame:frame];
-    if (self) 
+    if (self)
 	{
 		_cornerRadius = cornerRadius;
 		_borderWidth = borderWidth;
 		_text = [text copy];
+		_style = style;
 		
 		[self performDefaultInit];
+		[self updateAccordingToStyle];
     }
     return self;
 }
 
-#pragma mark Overriden Initializers
+
+#pragma mark Convenient initializers
+
+- (id)initWithFrame:(CGRect)frame cornerRadius:(CGFloat)cornerRadius borderWidth:(CGFloat)borderWidth andText:(NSString *)text
+{
+	return [self initWithFrame:frame style:NVUIGradientButtonStyleDefault cornerRadius:cornerRadius borderWidth:borderWidth andText:text];
+}
+
+
+- (id)initWithFrame:(CGRect)frame style:(NVUIGradientButtonStyle)style
+{
+	return [self initWithFrame:frame style:style cornerRadius:NVUIGradientButtonDefaultCorderRadius borderWidth:NVUIGradientButtonDefaultBorderWidth andText:nil];
+}
+
+#pragma mark Overriden initializers
 
 - (id)initWithFrame:(CGRect)frame
 {
-    return [self initWithFrame:frame cornerRadius:NVUIGradientButtonDefaultCorderRadius borderWidth:NVUIGradientButtonDefaultBorderWidth andText:nil];
+    return [self initWithFrame:frame style:NVUIGradientButtonStyleDefault cornerRadius:NVUIGradientButtonDefaultCorderRadius borderWidth:NVUIGradientButtonDefaultBorderWidth andText:nil];
 }
 
 
@@ -122,8 +162,10 @@
 	{
 		_cornerRadius = NVUIGradientButtonDefaultCorderRadius;
 		_borderWidth = NVUIGradientButtonDefaultBorderWidth;
+		_style = NVUIGradientButtonStyleDefault;
 		
 		[self performDefaultInit];
+		[self updateAccordingToStyle];
 	}
 	return self;
 }
