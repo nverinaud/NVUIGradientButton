@@ -7,8 +7,16 @@
 
 #import <UIKit/UIKit.h>
 
+typedef enum {
+	NVUIGradientButtonStyleDefault = 0,
+	NVUIGradientButtonStyleBlackOpaque,
+	NVUIGradientButtonStyleBlackTranslucent
+} NVUIGradientButtonStyle;
+
+
 @interface NVUIGradientButton : UIControl
 
+@property (nonatomic, readonly) NVUIGradientButtonStyle style;
 @property (nonatomic) CGFloat cornerRadius; // Default to 10.0
 @property (nonatomic) CGFloat borderWidth; // Default to 2.0
 @property (strong, nonatomic) UIColor *tintColor; // Default to gray
@@ -25,7 +33,10 @@
 @property (strong, nonatomic, readonly) UILabel *titleLabel;
 
 // Designated initializer
+- (id)initWithFrame:(CGRect)frame style:(NVUIGradientButtonStyle)style cornerRadius:(CGFloat)cornerRadius borderWidth:(CGFloat)borderWidth andText:(NSString *)text;
+// Convenient initializers
 - (id)initWithFrame:(CGRect)frame cornerRadius:(CGFloat)cornerRadius borderWidth:(CGFloat)borderWidth andText:(NSString *)text;
+- (id)initWithFrame:(CGRect)frame style:(NVUIGradientButtonStyle)style;
 
 // Convenience for configuration depending on states
 - (void)setTintColor:(UIColor *)tintColor forState:(UIControlState)state;

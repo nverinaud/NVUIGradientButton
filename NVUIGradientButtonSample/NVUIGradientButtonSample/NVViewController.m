@@ -14,24 +14,11 @@
 
 @implementation NVViewController
 
-@synthesize button			= _button;
-@synthesize disabledButton	= _disabledButton;
-@synthesize redButton		= _redButton;
-@synthesize darkBlueButton	= _darkBlueButton;
-@synthesize dynamicButton	= _dynamicButton;
-@synthesize redSlider		= _redSlider;
-@synthesize redValueLabel	= _redValueLabel;
-@synthesize greenSlider		= _greenSlider;
-@synthesize greenValueLabel	= _greenValueLabel;
-@synthesize blueSlider		= _blueSlider;
-@synthesize blueValueLabel	= _blueValueLabel;
-
 - (void)dealloc
 {
 	[_button release];
 	[_disabledButton release];
 	[_redButton release];
-	[_darkBlueButton release];
 	[_dynamicButton release];
 	[_redSlider release];
 	[_redValueLabel release];
@@ -58,16 +45,20 @@
 	self.redButton.tintColor = [UIColor colorWithRed:(CGFloat)120/255 green:0 blue:0 alpha:1];
 	self.redButton.highlightedTintColor = [UIColor colorWithRed:(CGFloat)190/255 green:0 blue:0 alpha:1];
 	
-	self.darkBlueButton.text = @"Dark Blue";
-	self.darkBlueButton.textColor = [UIColor whiteColor];
-	self.darkBlueButton.textShadowColor = [UIColor darkGrayColor];
-	self.darkBlueButton.tintColor = [UIColor colorWithRed:0 green:(CGFloat)78/255 blue:(CGFloat)120/255 alpha:1];
-	self.darkBlueButton.highlightedTintColor = [UIColor colorWithRed:(CGFloat)36/255 green:(CGFloat)76/255 blue:(CGFloat)97/255 alpha:1];
-	
 	self.dynamicButton.text = @"Dynamic";
 	self.dynamicButton.textColor = [UIColor whiteColor];
 	self.dynamicButton.textShadowColor = [UIColor darkGrayColor];
 	[self sliderValueChanged];
+	
+	/// Black Translucent Style
+	CGRect blackTranslucentButtonFrame = CGRectZero;
+	blackTranslucentButtonFrame.origin = CGPointMake(47, 179);
+	blackTranslucentButtonFrame.size = CGSizeMake(227, 45);
+	
+	NVUIGradientButton *blackButton = [[NVUIGradientButton alloc] initWithFrame:blackTranslucentButtonFrame style:NVUIGradientButtonStyleBlackTranslucent];
+	blackButton.text = @"Black Translucent";
+	[self.view addSubview:blackButton];
+	[blackButton release];
 }
 
 
@@ -109,7 +100,6 @@
 	self.button = nil;
 	self.disabledButton = nil;
 	self.redButton = nil;
-	self.darkBlueButton = nil;
 	self.dynamicButton = nil;
 	self.redSlider = nil;
 	self.redValueLabel = nil;
