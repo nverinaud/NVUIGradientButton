@@ -16,6 +16,7 @@
 		371F8ED71591ED3F00A6082F /* NVViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 371F8ED61591ED3F00A6082F /* NVViewController.m */; };
 		371F8EDA1591ED3F00A6082F /* NVViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 371F8ED81591ED3F00A6082F /* NVViewController_iPhone.xib */; };
 		371F8EEA1591EFA000A6082F /* NVUIGradientButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 371F8EE91591EFA000A6082F /* NVUIGradientButton.m */; };
+		378EF69415F6084B007FD971 /* arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 378EF69315F6084B007FD971 /* arrow.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +35,7 @@
 		371F8ED91591ED3F00A6082F /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/NVViewController_iPhone.xib; sourceTree = "<group>"; };
 		371F8EE81591EFA000A6082F /* NVUIGradientButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NVUIGradientButton.h; sourceTree = "<group>"; };
 		371F8EE91591EFA000A6082F /* NVUIGradientButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NVUIGradientButton.m; sourceTree = "<group>"; };
+		378EF69315F6084B007FD971 /* arrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = arrow.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -86,6 +88,7 @@
 				371F8ED51591ED3F00A6082F /* NVViewController.h */,
 				371F8ED61591ED3F00A6082F /* NVViewController.m */,
 				371F8ED81591ED3F00A6082F /* NVViewController_iPhone.xib */,
+				378EF69315F6084B007FD971 /* arrow.png */,
 				371F8ECA1591ED3E00A6082F /* Supporting Files */,
 			);
 			path = NVUIGradientButtonSample;
@@ -166,6 +169,7 @@
 			files = (
 				371F8ECE1591ED3E00A6082F /* InfoPlist.strings in Resources */,
 				371F8EDA1591ED3F00A6082F /* NVViewController_iPhone.xib in Resources */,
+				378EF69415F6084B007FD971 /* arrow.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

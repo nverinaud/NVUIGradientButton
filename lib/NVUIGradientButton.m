@@ -16,6 +16,7 @@
 - (UIColor *)textColorAccordingToCurrentState;
 - (UIColor *)textShadowColorAccordingToCurrentState;
 - (NSString *)textAccordingToCurrentState;
+- (UIImage *)rightAccessoryImageAccordingToCurrentState;
 - (CGGradientRef)newGradientAccordingToCurrentState;
 @property (strong, nonatomic, readwrite) UILabel *titleLabel;
 @end
@@ -39,6 +40,8 @@
 	[_highlightedText release];
 	[_disabledText release];
 	[_titleLabel release];
+	[_rightAccessoryImage release];
+	[_rightHighlightedAccessoryImage release];
 	
 	[super dealloc];
 }
@@ -304,6 +307,32 @@
 }
 
 
+- (void)setRightAccessoryImage:(UIImage *)rightAccessoryImage
+{
+	if (rightAccessoryImage != _rightAccessoryImage)
+	{
+		[_rightAccessoryImage release];
+		_rightAccessoryImage = [rightAccessoryImage retain];
+		
+		if (self.state & UIControlStateNormal)
+			[self setNeedsDisplay];
+	}
+}
+
+
+- (void)setRightHighlightedAccessoryImage:(UIImage *)rightHighlightedAccessoryImage
+{
+	if (rightHighlightedAccessoryImage != _rightHighlightedAccessoryImage)
+	{
+		[_rightHighlightedAccessoryImage release];
+		_rightHighlightedAccessoryImage = [rightHighlightedAccessoryImage retain];
+		
+		if (self.state & UIControlStateHighlighted)
+			[self setNeedsDisplay];
+	}
+}
+
+
 #pragma mark - Convenience configuration for states
 
 - (BOOL)isHighlightedOrSelected
@@ -362,6 +391,16 @@
 	
 	if (state & UIControlStateHighlighted || state & UIControlStateSelected)
 		self.highlightedText = text;
+}
+
+
+- (void)setRightAccessoryImage:(UIImage *)rightAccessoryImage forState:(UIControlState)state
+{
+	if (state == UIControlStateNormal)
+		self.rightAccessoryImage = rightAccessoryImage;
+	
+	if (state & UIControlStateHighlighted || state & UIControlStateSelected)
+		self.rightHighlightedAccessoryImage = rightAccessoryImage;
 }
 
 
@@ -425,6 +464,17 @@
 }
 
 
+- (UIImage *)rightAccessoryImageAccordingToCurrentState
+{
+	UIImage *image = _rightAccessoryImage;
+	
+	if ([self isHighlightedOrSelected] && _rightHighlightedAccessoryImage)
+		image = _rightHighlightedAccessoryImage;
+	
+	return image;
+}
+
+
 #pragma mark - Gradient
 
 - (CGGradientRef)newGradientAccordingToCurrentState
@@ -474,6 +524,9 @@
 
 #pragma mark - Drawing
 
+#define ACCESSORY_HEIGHT				44
+#define MIN_ACCESSORY_HORIZONTAL_MARGIN 10
+
 - (void)drawRect:(CGRect)rect
 {
 	CGContextRef ctx = UIGraphicsGetCurrentContext();
@@ -505,6 +558,20 @@
 		UIColor *tint = [self tintColorAccordingToCurrentState];
 		[tint set];
 		[path fill];
+	}
+		
+	// Draw right image
+	UIImage *rightImage = [self rightAccessoryImageAccordingToCurrentState];
+	if (rightImage)
+	{
+		CGRect rightAccessoryRect = CGRectZero;
+		rightAccessoryRect.size.height = MIN(ACCESSORY_HEIGHT, CGRectGetHeight(self.bounds)/2);
+		rightAccessoryRect.size.width = rightAccessoryRect.size.height / rightImage.size.height * rightImage.size.width;
+		rightAccessoryRect.origin.y = (CGRectGetHeight(self.bounds) - CGRectGetHeight(rightAccessoryRect)) / 2;
+		
+		CGFloat rightPadding = MAX(_cornerRadius/2, MIN_ACCESSORY_HORIZONTAL_MARGIN);
+		rightAccessoryRect.origin.x = CGRectGetWidth(self.bounds) - CGRectGetWidth(rightAccessoryRect) - rightPadding;
+		[rightImage drawInRect:rightAccessoryRect];		
 	}
 	
 	// Draw text
