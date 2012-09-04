@@ -64,6 +64,8 @@
 	_titleLabel.minimumFontSize = 12.0;
 	_titleLabel.shadowOffset = CGSizeMake(0, -1);
 	
+	_gradientEnabled = YES;
+	
 	self.opaque = NO;
 	self.backgroundColor = [UIColor clearColor];
 }
@@ -158,7 +160,7 @@
 - (id)initWithCoder:(NSCoder *)aDecoder
 {
 	self = [super initWithCoder:aDecoder];
-	if (self) 
+	if (self)
 	{
 		_cornerRadius = NVUIGradientButtonDefaultCorderRadius;
 		_borderWidth = NVUIGradientButtonDefaultBorderWidth;
@@ -175,7 +177,7 @@
 
 - (void)setTintColor:(UIColor *)tintColor
 {
-	if (tintColor != _tintColor) 
+	if (tintColor != _tintColor)
 	{
 		[_tintColor release];
 		_tintColor = [tintColor retain];
@@ -187,7 +189,7 @@
 
 - (void)setBorderColor:(UIColor *)borderColor
 {
-	if (borderColor != _borderColor) 
+	if (borderColor != _borderColor)
 	{
 		[_borderColor release];
 		_borderColor = [borderColor retain];
@@ -200,7 +202,7 @@
 
 - (void)setHighlightedBorderColor:(UIColor *)highlightedBorderColor
 {
-	if (highlightedBorderColor != _highlightedBorderColor) 
+	if (highlightedBorderColor != _highlightedBorderColor)
 	{
 		[_highlightedBorderColor release];
 		_highlightedBorderColor = [highlightedBorderColor retain];
@@ -213,7 +215,7 @@
 
 - (void)setTextColor:(UIColor *)textColor
 {
-	if (textColor != _textColor) 
+	if (textColor != _textColor)
 	{
 		[_textColor release];
 		_textColor = [textColor retain];
@@ -226,7 +228,7 @@
 
 - (void)setHighlightedTextColor:(UIColor *)highlightedTextColor
 {
-	if (highlightedTextColor != _highlightedTextColor) 
+	if (highlightedTextColor != _highlightedTextColor)
 	{
 		[_highlightedTextColor release];
 		_highlightedTextColor = [highlightedTextColor retain];
@@ -239,7 +241,7 @@
 
 - (void)setTextShadowColor:(UIColor *)textShadowColor
 {
-	if (textShadowColor != _textShadowColor) 
+	if (textShadowColor != _textShadowColor)
 	{
 		[_textShadowColor release];
 		_textShadowColor = [textShadowColor retain];
@@ -252,7 +254,7 @@
 
 - (void)setHighlightedTextShadowColor:(UIColor *)highlightedTextShadowColor
 {
-	if (highlightedTextShadowColor != _highlightedTextShadowColor) 
+	if (highlightedTextShadowColor != _highlightedTextShadowColor)
 	{
 		[_highlightedTextShadowColor release];
 		_highlightedTextShadowColor = [highlightedTextShadowColor retain];
@@ -278,7 +280,7 @@
 
 - (void)setHighlightedText:(NSString *)highlightedText
 {
-	if (![highlightedText isEqualToString:_highlightedText]) 
+	if (![highlightedText isEqualToString:_highlightedText])
 	{
 		[_highlightedText release];
 		_highlightedText = [highlightedText copy];
@@ -291,7 +293,7 @@
 
 - (void)setDisabledText:(NSString *)disabledText
 {
-	if (![disabledText isEqualToString:_disabledText]) 
+	if (![disabledText isEqualToString:_disabledText])
 	{
 		[_disabledText release];
 		_disabledText = [disabledText copy];
@@ -312,53 +314,53 @@
 
 - (void)setTintColor:(UIColor *)tintColor forState:(UIControlState)state
 {
-	if (state == UIControlStateNormal) 
+	if (state == UIControlStateNormal)
 		self.tintColor = tintColor;
 	
-	if (state & UIControlStateHighlighted || state & UIControlStateSelected) 
+	if (state & UIControlStateHighlighted || state & UIControlStateSelected)
 		self.highlightedTintColor = tintColor;
 }
 
 
 - (void)setBorderColor:(UIColor *)borderColor forState:(UIControlState)state
 {
-	if (state == UIControlStateNormal) 
+	if (state == UIControlStateNormal)
 		self.borderColor = borderColor;
 	
-	if (state & UIControlStateHighlighted || state & UIControlStateSelected) 
+	if (state & UIControlStateHighlighted || state & UIControlStateSelected)
 		self.highlightedBorderColor = borderColor;
 }
 
 
 - (void)setTextColor:(UIColor *)textColor forState:(UIControlState)state
 {
-	if (state == UIControlStateNormal) 
+	if (state == UIControlStateNormal)
 		self.textColor = textColor;
 	
-	if (state & UIControlStateHighlighted || state & UIControlStateSelected) 
+	if (state & UIControlStateHighlighted || state & UIControlStateSelected)
 		self.highlightedTextColor = textColor;
 }
 
 
 - (void)setTextShadowColor:(UIColor *)textShadowColor forState:(UIControlState)state
 {
-	if (state == UIControlStateNormal) 
+	if (state == UIControlStateNormal)
 		self.textShadowColor = textShadowColor;
 	
-	if (state & UIControlStateHighlighted || state & UIControlStateSelected) 
+	if (state & UIControlStateHighlighted || state & UIControlStateSelected)
 		self.highlightedTextShadowColor = textShadowColor;
 }
 
 
 - (void)setText:(NSString *)text forState:(UIControlState)state
 {
-	if (state == UIControlStateNormal) 
+	if (state == UIControlStateNormal)
 		self.text = text;
 	
-	if (state & UIControlStateDisabled) 
+	if (state & UIControlStateDisabled)
 		self.disabledText = text;
 	
-	if (state & UIControlStateHighlighted || state & UIControlStateSelected) 
+	if (state & UIControlStateHighlighted || state & UIControlStateSelected)
 		self.highlightedText = text;
 }
 
@@ -375,12 +377,12 @@
 
 
 - (UIColor *)borderColorAccordingToCurrentState
-{	
+{
 	UIColor *borderColor = _borderColor;
 	
 	if ([self isHighlightedOrSelected] && _highlightedBorderColor)
 		borderColor = _highlightedBorderColor;
-		
+	
 	return borderColor;
 }
 
@@ -392,7 +394,7 @@
 	if ([self isHighlightedOrSelected] && _highlightedTextColor)
 		textColor = _highlightedTextColor;
 	
-	if (!self.enabled) 
+	if (!self.enabled)
 		textColor = [textColor colorWithAlphaComponent:0.5];
 	
 	return textColor;
@@ -437,7 +439,7 @@
 	{
 		[middleColor getRed:&red green:&green blue:&blue alpha:&alpha];
 	}
-	else 
+	else
 	{
 		CGColorRef color = [middleColor CGColor];
 		const CGFloat *components = CGColorGetComponents(color);
@@ -473,7 +475,7 @@
 #pragma mark - Drawing
 
 - (void)drawRect:(CGRect)rect
-{		
+{
 	CGContextRef ctx = UIGraphicsGetCurrentContext();
 	
 	UIBezierPath *path = [UIBezierPath bezierPathWithRect:self.bounds];
@@ -488,13 +490,22 @@
 	NSString *text = [self textAccordingToCurrentState];
 	
 	// Draw background
-	CGGradientRef gradient = [self newGradientAccordingToCurrentState];
-	CGFloat midX = CGRectGetMidX(self.bounds);
-	CGFloat botY = CGRectGetMaxY(self.bounds);
-	CGPoint startPoint = CGPointMake(midX, 0);
-	CGPoint endPoint = CGPointMake(midX, botY);
-	CGContextDrawLinearGradient(ctx, gradient, startPoint, endPoint, 0);
-	CGGradientRelease(gradient);
+	if (_gradientEnabled)
+	{
+		CGGradientRef gradient = [self newGradientAccordingToCurrentState];
+		CGFloat midX = CGRectGetMidX(self.bounds);
+		CGFloat botY = CGRectGetMaxY(self.bounds);
+		CGPoint startPoint = CGPointMake(midX, 0);
+		CGPoint endPoint = CGPointMake(midX, botY);
+		CGContextDrawLinearGradient(ctx, gradient, startPoint, endPoint, 0);
+		CGGradientRelease(gradient);
+	}
+	else
+	{
+		UIColor *tint = [self tintColorAccordingToCurrentState];
+		[tint set];
+		[path fill];
+	}
 	
 	// Draw text
 	_titleLabel.textColor = textColor;
@@ -550,19 +561,19 @@
 
 #pragma mark - Accessibility
 
-- (BOOL)isAccessibilityElement 
+- (BOOL)isAccessibilityElement
 {
     return YES;
-}    
+}
 
 
-- (NSString *)accessibilityLabel 
+- (NSString *)accessibilityLabel
 {
     return [self textAccordingToCurrentState];
 }
 
 
-- (UIAccessibilityTraits)accessibilityTraits 
+- (UIAccessibilityTraits)accessibilityTraits
 {
 	UIAccessibilityTraits traits = UIAccessibilityTraitButton;
 	
@@ -571,32 +582,15 @@
 	
 	if (!self.enabled)
 		traits = traits >> UIAccessibilityTraitNotEnabled;
-
+	
     return traits;
 }
 
 
-- (NSString *)accessibilityHint 
+- (NSString *)accessibilityHint
 {
 	return [self textAccordingToCurrentState];
 }
 
 
 @end
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
