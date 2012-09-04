@@ -505,8 +505,12 @@
 	[_titleLabel drawTextInRect:self.bounds];
 	
 	// Draw border
-	[borderColor set];
-	[path stroke];
+	if (_borderWidth > 0)
+	{
+		path.lineWidth = _borderWidth;
+		[borderColor set];
+		[path stroke];
+	}
 }
 
 
