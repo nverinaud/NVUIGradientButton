@@ -44,6 +44,7 @@
 	self.redButton.textShadowColor = [UIColor darkGrayColor];
 	self.redButton.tintColor = [UIColor colorWithRed:(CGFloat)120/255 green:0 blue:0 alpha:1];
 	self.redButton.highlightedTintColor = [UIColor colorWithRed:(CGFloat)190/255 green:0 blue:0 alpha:1];
+	self.redButton.rightAccessoryImage = [UIImage imageNamed:@"arrow"];
 	
 	self.dynamicButton.text = @"Dynamic";
 	self.dynamicButton.textColor = [UIColor whiteColor];

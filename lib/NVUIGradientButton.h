@@ -32,6 +32,8 @@ typedef enum {
 @property (copy, nonatomic) NSString *disabledText; // Default to text
 @property (strong, nonatomic, readonly) UILabel *titleLabel;
 @property (nonatomic, getter = isGradientEnabled) BOOL gradientEnabled; // Default to YES, set to NO to draw flat color
+@property (nonatomic, strong) UIImage *rightAccessoryImage;
+@property (nonatomic, strong) UIImage *rightHighlightedAccessoryImage;
 
 // Designated initializer
 - (id)initWithFrame:(CGRect)frame style:(NVUIGradientButtonStyle)style cornerRadius:(CGFloat)cornerRadius borderWidth:(CGFloat)borderWidth andText:(NSString *)text;
@@ -45,5 +47,6 @@ typedef enum {
 - (void)setTextColor:(UIColor *)textColor forState:(UIControlState)state;
 - (void)setTextShadowColor:(UIColor *)textShadowColor forState:(UIControlState)state;
 - (void)setText:(NSString *)text forState:(UIControlState)state;
+- (void)setRightAccessoryImage:(UIImage *)rightAccessoryImage forState:(UIControlState)state;
 
 @end
