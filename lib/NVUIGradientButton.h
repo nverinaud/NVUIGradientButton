@@ -31,6 +31,7 @@ typedef enum {
 @property (copy, nonatomic) NSString *highlightedText; // Default to text
 @property (copy, nonatomic) NSString *disabledText; // Default to text
 @property (strong, nonatomic, readonly) UILabel *titleLabel;
+@property (nonatomic, getter = isGradientEnabled) BOOL gradientEnabled; // Default to YES, set to NO to draw flat color
 
 // Designated initializer
 - (id)initWithFrame:(CGRect)frame style:(NVUIGradientButtonStyle)style cornerRadius:(CGFloat)cornerRadius borderWidth:(CGFloat)borderWidth andText:(NSString *)text;
