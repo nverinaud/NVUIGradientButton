@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		371D89991600B73B000B4BDA /* CHANGELOG.md in Resources */ = {isa = PBXBuildFile; fileRef = 371D89961600B73B000B4BDA /* CHANGELOG.md */; };
+		371D899A1600B73B000B4BDA /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 371D89971600B73B000B4BDA /* README.md */; };
+		371D899B1600B73B000B4BDA /* VERSION in Resources */ = {isa = PBXBuildFile; fileRef = 371D89981600B73B000B4BDA /* VERSION */; };
 		371F8EC41591ED3E00A6082F /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 371F8EC31591ED3E00A6082F /* UIKit.framework */; };
 		371F8EC61591ED3E00A6082F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 371F8EC51591ED3E00A6082F /* Foundation.framework */; };
 		371F8EC81591ED3E00A6082F /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 371F8EC71591ED3E00A6082F /* CoreGraphics.framework */; };
@@ -20,6 +23,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		371D89961600B73B000B4BDA /* CHANGELOG.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = CHANGELOG.md; path = ../CHANGELOG.md; sourceTree = "<group>"; };
+		371D89971600B73B000B4BDA /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = README.md; path = ../README.md; sourceTree = "<group>"; };
+		371D89981600B73B000B4BDA /* VERSION */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = VERSION; path = ../VERSION; sourceTree = "<group>"; };
 		371F8EBF1591ED3E00A6082F /* NVUIGradientButtonSample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NVUIGradientButtonSample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		371F8EC31591ED3E00A6082F /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		371F8EC51591ED3E00A6082F /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -59,6 +65,9 @@
 				371F8EC91591ED3E00A6082F /* NVUIGradientButtonSample */,
 				371F8EC21591ED3E00A6082F /* Frameworks */,
 				371F8EC01591ED3E00A6082F /* Products */,
+				371D89961600B73B000B4BDA /* CHANGELOG.md */,
+				371D89971600B73B000B4BDA /* README.md */,
+				371D89981600B73B000B4BDA /* VERSION */,
 			);
 			sourceTree = "<group>";
 		};
@@ -170,6 +179,9 @@
 				371F8ECE1591ED3E00A6082F /* InfoPlist.strings in Resources */,
 				371F8EDA1591ED3F00A6082F /* NVViewController_iPhone.xib in Resources */,
 				378EF69415F6084B007FD971 /* arrow.png in Resources */,
+				371D89991600B73B000B4BDA /* CHANGELOG.md in Resources */,
+				371D899A1600B73B000B4BDA /* README.md in Resources */,
+				371D899B1600B73B000B4BDA /* VERSION in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
