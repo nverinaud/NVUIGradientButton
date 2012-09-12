@@ -62,7 +62,7 @@
 	_titleLabel = [[UILabel alloc] init];
 	_titleLabel.textAlignment = UITextAlignmentCenter;
 	_titleLabel.lineBreakMode = UILineBreakModeMiddleTruncation;
-	_titleLabel.numberOfLines = 1;
+	_titleLabel.numberOfLines = 0;
 	_titleLabel.font = [UIFont boldSystemFontOfSize:15.0];
 	_titleLabel.minimumFontSize = 12.0;
 	_titleLabel.shadowOffset = CGSizeMake(0, -1);
@@ -524,23 +524,21 @@
 
 #pragma mark - Drawing
 
-#define ACCESSORY_HEIGHT				44
-#define MIN_ACCESSORY_HORIZONTAL_MARGIN 10
+#define DEFAULT_PADDING		4
 
 - (void)drawRect:(CGRect)rect
 {
+	// Setting Env
 	CGContextRef ctx = UIGraphicsGetCurrentContext();
-	
-	UIBezierPath *path = [UIBezierPath bezierPathWithRect:self.bounds];
-	
-	path = [UIBezierPath bezierPathWithRoundedRect:self.bounds cornerRadius:_cornerRadius];
-	
-	[path addClip];
-	
+	UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:self.bounds cornerRadius:_cornerRadius];
+	CGFloat padding = _borderWidth + DEFAULT_PADDING;
 	UIColor *borderColor = [self borderColorAccordingToCurrentState];
 	UIColor *textColor = [self textColorAccordingToCurrentState];
 	UIColor *textShadowColor = [self textShadowColorAccordingToCurrentState];
 	NSString *text = [self textAccordingToCurrentState];
+	
+	// Draw
+	[path addClip];
 	
 	// Draw background
 	if (_gradientEnabled)
@@ -559,28 +557,19 @@
 		[tint set];
 		[path fill];
 	}
-		
+	
 	// Draw right image
 	UIImage *rightImage = [self rightAccessoryImageAccordingToCurrentState];
+	CGRect rightAccessoryRect = CGRectZero;
 	if (rightImage)
 	{
-		CGRect rightAccessoryRect = CGRectZero;
-		rightAccessoryRect.size.height = MIN(ACCESSORY_HEIGHT, CGRectGetHeight(self.bounds)/2);
+		CGFloat maxHeight = CGRectGetHeight(self.bounds) - padding*2;
+		rightAccessoryRect.size.height = MIN(maxHeight, rightImage.size.height);
 		rightAccessoryRect.size.width = rightAccessoryRect.size.height / rightImage.size.height * rightImage.size.width;
 		rightAccessoryRect.origin.y = (CGRectGetHeight(self.bounds) - CGRectGetHeight(rightAccessoryRect)) / 2;
-		
-		CGFloat rightPadding = MAX(_cornerRadius/2, MIN_ACCESSORY_HORIZONTAL_MARGIN);
-		rightAccessoryRect.origin.x = CGRectGetWidth(self.bounds) - CGRectGetWidth(rightAccessoryRect) - rightPadding;
-		[rightImage drawInRect:rightAccessoryRect];		
+		rightAccessoryRect.origin.x = CGRectGetWidth(self.bounds) - CGRectGetWidth(rightAccessoryRect) - padding;
+		[rightImage drawInRect:rightAccessoryRect];
 	}
-	
-	// Draw text
-	_titleLabel.textColor = textColor;
-	_titleLabel.shadowColor = textShadowColor;
-	_titleLabel.text = text;
-	
-	[textColor set];
-	[_titleLabel drawTextInRect:self.bounds];
 	
 	// Draw border
 	if (_borderWidth > 0)
@@ -589,6 +578,19 @@
 		[borderColor set];
 		[path stroke];
 	}
+	
+	// Draw text
+	CGRect innerRect = self.bounds;
+	innerRect = CGRectInset(innerRect, padding, padding);
+	if (rightImage)
+		innerRect.size.width = CGRectGetMinX(rightAccessoryRect);
+	
+	_titleLabel.textColor = textColor;
+	_titleLabel.shadowColor = textShadowColor;
+	_titleLabel.text = text;
+	
+	[textColor set];
+	[_titleLabel drawTextInRect:innerRect];
 }
 
 
