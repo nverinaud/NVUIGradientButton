@@ -16,6 +16,7 @@
 - (UIColor *)textColorAccordingToCurrentState;
 - (UIColor *)textShadowColorAccordingToCurrentState;
 - (NSString *)textAccordingToCurrentState;
+- (UIImage *)rightAccessoryImageAccordingToCurrentState;
 - (CGGradientRef)newGradientAccordingToCurrentState;
 @property (strong, nonatomic, readwrite) UILabel *titleLabel;
 @end
@@ -39,6 +40,8 @@
 	[_highlightedText release];
 	[_disabledText release];
 	[_titleLabel release];
+	[_rightAccessoryImage release];
+	[_rightHighlightedAccessoryImage release];
 	
 	[super dealloc];
 }
@@ -59,10 +62,12 @@
 	_titleLabel = [[UILabel alloc] init];
 	_titleLabel.textAlignment = UITextAlignmentCenter;
 	_titleLabel.lineBreakMode = UILineBreakModeMiddleTruncation;
-	_titleLabel.numberOfLines = 1;
+	_titleLabel.numberOfLines = 0;
 	_titleLabel.font = [UIFont boldSystemFontOfSize:15.0];
 	_titleLabel.minimumFontSize = 12.0;
 	_titleLabel.shadowOffset = CGSizeMake(0, -1);
+	
+	_gradientEnabled = YES;
 	
 	self.opaque = NO;
 	self.backgroundColor = [UIColor clearColor];
@@ -158,7 +163,7 @@
 - (id)initWithCoder:(NSCoder *)aDecoder
 {
 	self = [super initWithCoder:aDecoder];
-	if (self) 
+	if (self)
 	{
 		_cornerRadius = NVUIGradientButtonDefaultCorderRadius;
 		_borderWidth = NVUIGradientButtonDefaultBorderWidth;
@@ -175,7 +180,7 @@
 
 - (void)setTintColor:(UIColor *)tintColor
 {
-	if (tintColor != _tintColor) 
+	if (tintColor != _tintColor)
 	{
 		[_tintColor release];
 		_tintColor = [tintColor retain];
@@ -187,7 +192,7 @@
 
 - (void)setBorderColor:(UIColor *)borderColor
 {
-	if (borderColor != _borderColor) 
+	if (borderColor != _borderColor)
 	{
 		[_borderColor release];
 		_borderColor = [borderColor retain];
@@ -200,7 +205,7 @@
 
 - (void)setHighlightedBorderColor:(UIColor *)highlightedBorderColor
 {
-	if (highlightedBorderColor != _highlightedBorderColor) 
+	if (highlightedBorderColor != _highlightedBorderColor)
 	{
 		[_highlightedBorderColor release];
 		_highlightedBorderColor = [highlightedBorderColor retain];
@@ -213,7 +218,7 @@
 
 - (void)setTextColor:(UIColor *)textColor
 {
-	if (textColor != _textColor) 
+	if (textColor != _textColor)
 	{
 		[_textColor release];
 		_textColor = [textColor retain];
@@ -226,7 +231,7 @@
 
 - (void)setHighlightedTextColor:(UIColor *)highlightedTextColor
 {
-	if (highlightedTextColor != _highlightedTextColor) 
+	if (highlightedTextColor != _highlightedTextColor)
 	{
 		[_highlightedTextColor release];
 		_highlightedTextColor = [highlightedTextColor retain];
@@ -239,7 +244,7 @@
 
 - (void)setTextShadowColor:(UIColor *)textShadowColor
 {
-	if (textShadowColor != _textShadowColor) 
+	if (textShadowColor != _textShadowColor)
 	{
 		[_textShadowColor release];
 		_textShadowColor = [textShadowColor retain];
@@ -252,7 +257,7 @@
 
 - (void)setHighlightedTextShadowColor:(UIColor *)highlightedTextShadowColor
 {
-	if (highlightedTextShadowColor != _highlightedTextShadowColor) 
+	if (highlightedTextShadowColor != _highlightedTextShadowColor)
 	{
 		[_highlightedTextShadowColor release];
 		_highlightedTextShadowColor = [highlightedTextShadowColor retain];
@@ -278,7 +283,7 @@
 
 - (void)setHighlightedText:(NSString *)highlightedText
 {
-	if (![highlightedText isEqualToString:_highlightedText]) 
+	if (![highlightedText isEqualToString:_highlightedText])
 	{
 		[_highlightedText release];
 		_highlightedText = [highlightedText copy];
@@ -291,12 +296,38 @@
 
 - (void)setDisabledText:(NSString *)disabledText
 {
-	if (![disabledText isEqualToString:_disabledText]) 
+	if (![disabledText isEqualToString:_disabledText])
 	{
 		[_disabledText release];
 		_disabledText = [disabledText copy];
 		
 		if (self.state & UIControlStateDisabled)
+			[self setNeedsDisplay];
+	}
+}
+
+
+- (void)setRightAccessoryImage:(UIImage *)rightAccessoryImage
+{
+	if (rightAccessoryImage != _rightAccessoryImage)
+	{
+		[_rightAccessoryImage release];
+		_rightAccessoryImage = [rightAccessoryImage retain];
+		
+		if (self.state & UIControlStateNormal)
+			[self setNeedsDisplay];
+	}
+}
+
+
+- (void)setRightHighlightedAccessoryImage:(UIImage *)rightHighlightedAccessoryImage
+{
+	if (rightHighlightedAccessoryImage != _rightHighlightedAccessoryImage)
+	{
+		[_rightHighlightedAccessoryImage release];
+		_rightHighlightedAccessoryImage = [rightHighlightedAccessoryImage retain];
+		
+		if (self.state & UIControlStateHighlighted)
 			[self setNeedsDisplay];
 	}
 }
@@ -312,54 +343,64 @@
 
 - (void)setTintColor:(UIColor *)tintColor forState:(UIControlState)state
 {
-	if (state == UIControlStateNormal) 
+	if (state == UIControlStateNormal)
 		self.tintColor = tintColor;
 	
-	if (state & UIControlStateHighlighted || state & UIControlStateSelected) 
+	if (state & UIControlStateHighlighted || state & UIControlStateSelected)
 		self.highlightedTintColor = tintColor;
 }
 
 
 - (void)setBorderColor:(UIColor *)borderColor forState:(UIControlState)state
 {
-	if (state == UIControlStateNormal) 
+	if (state == UIControlStateNormal)
 		self.borderColor = borderColor;
 	
-	if (state & UIControlStateHighlighted || state & UIControlStateSelected) 
+	if (state & UIControlStateHighlighted || state & UIControlStateSelected)
 		self.highlightedBorderColor = borderColor;
 }
 
 
 - (void)setTextColor:(UIColor *)textColor forState:(UIControlState)state
 {
-	if (state == UIControlStateNormal) 
+	if (state == UIControlStateNormal)
 		self.textColor = textColor;
 	
-	if (state & UIControlStateHighlighted || state & UIControlStateSelected) 
+	if (state & UIControlStateHighlighted || state & UIControlStateSelected)
 		self.highlightedTextColor = textColor;
 }
 
 
 - (void)setTextShadowColor:(UIColor *)textShadowColor forState:(UIControlState)state
 {
-	if (state == UIControlStateNormal) 
+	if (state == UIControlStateNormal)
 		self.textShadowColor = textShadowColor;
 	
-	if (state & UIControlStateHighlighted || state & UIControlStateSelected) 
+	if (state & UIControlStateHighlighted || state & UIControlStateSelected)
 		self.highlightedTextShadowColor = textShadowColor;
 }
 
 
 - (void)setText:(NSString *)text forState:(UIControlState)state
 {
-	if (state == UIControlStateNormal) 
+	if (state == UIControlStateNormal)
 		self.text = text;
 	
-	if (state & UIControlStateDisabled) 
+	if (state & UIControlStateDisabled)
 		self.disabledText = text;
 	
-	if (state & UIControlStateHighlighted || state & UIControlStateSelected) 
+	if (state & UIControlStateHighlighted || state & UIControlStateSelected)
 		self.highlightedText = text;
+}
+
+
+- (void)setRightAccessoryImage:(UIImage *)rightAccessoryImage forState:(UIControlState)state
+{
+	if (state == UIControlStateNormal)
+		self.rightAccessoryImage = rightAccessoryImage;
+	
+	if (state & UIControlStateHighlighted || state & UIControlStateSelected)
+		self.rightHighlightedAccessoryImage = rightAccessoryImage;
 }
 
 
@@ -375,12 +416,12 @@
 
 
 - (UIColor *)borderColorAccordingToCurrentState
-{	
+{
 	UIColor *borderColor = _borderColor;
 	
 	if ([self isHighlightedOrSelected] && _highlightedBorderColor)
 		borderColor = _highlightedBorderColor;
-		
+	
 	return borderColor;
 }
 
@@ -392,7 +433,7 @@
 	if ([self isHighlightedOrSelected] && _highlightedTextColor)
 		textColor = _highlightedTextColor;
 	
-	if (!self.enabled) 
+	if (!self.enabled)
 		textColor = [textColor colorWithAlphaComponent:0.5];
 	
 	return textColor;
@@ -423,6 +464,17 @@
 }
 
 
+- (UIImage *)rightAccessoryImageAccordingToCurrentState
+{
+	UIImage *image = _rightAccessoryImage;
+	
+	if ([self isHighlightedOrSelected] && _rightHighlightedAccessoryImage)
+		image = _rightHighlightedAccessoryImage;
+	
+	return image;
+}
+
+
 #pragma mark - Gradient
 
 - (CGGradientRef)newGradientAccordingToCurrentState
@@ -437,7 +489,7 @@
 	{
 		[middleColor getRed:&red green:&green blue:&blue alpha:&alpha];
 	}
-	else 
+	else
 	{
 		CGColorRef color = [middleColor CGColor];
 		const CGFloat *components = CGColorGetComponents(color);
@@ -472,41 +524,73 @@
 
 #pragma mark - Drawing
 
+#define DEFAULT_PADDING		4
+
 - (void)drawRect:(CGRect)rect
-{		
+{
+	// Setting Env
 	CGContextRef ctx = UIGraphicsGetCurrentContext();
-	
-	UIBezierPath *path = [UIBezierPath bezierPathWithRect:self.bounds];
-	
-	path = [UIBezierPath bezierPathWithRoundedRect:self.bounds cornerRadius:_cornerRadius];
-	
-	[path addClip];
-	
+	UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:self.bounds cornerRadius:_cornerRadius];
+	CGFloat padding = _borderWidth + DEFAULT_PADDING;
 	UIColor *borderColor = [self borderColorAccordingToCurrentState];
 	UIColor *textColor = [self textColorAccordingToCurrentState];
 	UIColor *textShadowColor = [self textShadowColorAccordingToCurrentState];
 	NSString *text = [self textAccordingToCurrentState];
 	
+	// Draw
+	[path addClip];
+	
 	// Draw background
-	CGGradientRef gradient = [self newGradientAccordingToCurrentState];
-	CGFloat midX = CGRectGetMidX(self.bounds);
-	CGFloat botY = CGRectGetMaxY(self.bounds);
-	CGPoint startPoint = CGPointMake(midX, 0);
-	CGPoint endPoint = CGPointMake(midX, botY);
-	CGContextDrawLinearGradient(ctx, gradient, startPoint, endPoint, 0);
-	CGGradientRelease(gradient);
+	if (_gradientEnabled)
+	{
+		CGGradientRef gradient = [self newGradientAccordingToCurrentState];
+		CGFloat midX = CGRectGetMidX(self.bounds);
+		CGFloat botY = CGRectGetMaxY(self.bounds);
+		CGPoint startPoint = CGPointMake(midX, 0);
+		CGPoint endPoint = CGPointMake(midX, botY);
+		CGContextDrawLinearGradient(ctx, gradient, startPoint, endPoint, 0);
+		CGGradientRelease(gradient);
+	}
+	else
+	{
+		UIColor *tint = [self tintColorAccordingToCurrentState];
+		[tint set];
+		[path fill];
+	}
+	
+	// Draw right image
+	UIImage *rightImage = [self rightAccessoryImageAccordingToCurrentState];
+	CGRect rightAccessoryRect = CGRectZero;
+	if (rightImage)
+	{
+		CGFloat maxHeight = CGRectGetHeight(self.bounds) - padding*2;
+		rightAccessoryRect.size.height = MIN(maxHeight, rightImage.size.height);
+		rightAccessoryRect.size.width = rightAccessoryRect.size.height / rightImage.size.height * rightImage.size.width;
+		rightAccessoryRect.origin.y = (CGRectGetHeight(self.bounds) - CGRectGetHeight(rightAccessoryRect)) / 2;
+		rightAccessoryRect.origin.x = CGRectGetWidth(self.bounds) - CGRectGetWidth(rightAccessoryRect) - padding;
+		[rightImage drawInRect:rightAccessoryRect];
+	}
+	
+	// Draw border
+	if (_borderWidth > 0)
+	{
+		path.lineWidth = _borderWidth;
+		[borderColor set];
+		[path stroke];
+	}
 	
 	// Draw text
+	CGRect innerRect = self.bounds;
+	innerRect = CGRectInset(innerRect, padding, padding);
+	if (rightImage)
+		innerRect.size.width = CGRectGetMinX(rightAccessoryRect);
+	
 	_titleLabel.textColor = textColor;
 	_titleLabel.shadowColor = textShadowColor;
 	_titleLabel.text = text;
 	
 	[textColor set];
-	[_titleLabel drawTextInRect:self.bounds];
-	
-	// Draw border
-	[borderColor set];
-	[path stroke];
+	[_titleLabel drawTextInRect:innerRect];
 }
 
 
@@ -546,19 +630,19 @@
 
 #pragma mark - Accessibility
 
-- (BOOL)isAccessibilityElement 
+- (BOOL)isAccessibilityElement
 {
     return YES;
-}    
+}
 
 
-- (NSString *)accessibilityLabel 
+- (NSString *)accessibilityLabel
 {
     return [self textAccordingToCurrentState];
 }
 
 
-- (UIAccessibilityTraits)accessibilityTraits 
+- (UIAccessibilityTraits)accessibilityTraits
 {
 	UIAccessibilityTraits traits = UIAccessibilityTraitButton;
 	
@@ -567,32 +651,15 @@
 	
 	if (!self.enabled)
 		traits = traits >> UIAccessibilityTraitNotEnabled;
-
+	
     return traits;
 }
 
 
-- (NSString *)accessibilityHint 
+- (NSString *)accessibilityHint
 {
 	return [self textAccordingToCurrentState];
 }
 
 
 @end
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
