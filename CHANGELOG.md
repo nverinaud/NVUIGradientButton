@@ -1,8 +1,12 @@
 # Changelog
 
+## Release 1.2.1
+
+* Fix a crash happening when a change of the style occured
+
 ## Release 1.2
 
-* The style property is now a readwrite property.
+* The style property is now a readwrite property
 
 ## Release 1.1.1
 
