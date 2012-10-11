@@ -130,7 +130,6 @@
 		_cornerRadius = cornerRadius;
 		_borderWidth = borderWidth;
 		_text = [text copy];
-		_style = style;
 		
 		[self performDefaultInit];
 		
@@ -168,10 +167,10 @@
 	{
 		_cornerRadius = NVUIGradientButtonDefaultCorderRadius;
 		_borderWidth = NVUIGradientButtonDefaultBorderWidth;
-		_style = NVUIGradientButtonStyleDefault;
 		
 		[self performDefaultInit];
-		[self updateAccordingToStyle];
+		
+		self.style = NVUIGradientButtonStyleDefault;
 	}
 	return self;
 }
@@ -196,7 +195,21 @@
 		[_tintColor release];
 		_tintColor = [tintColor retain];
 		
-		[self setNeedsDisplay];
+		if (self.state == UIControlStateNormal)
+			[self setNeedsDisplay];
+	}
+}
+
+
+- (void)setHighlightedTintColor:(UIColor *)highlightedTintColor
+{
+	if (highlightedTintColor != _highlightedTintColor)
+	{
+		[_highlightedTintColor release];
+		_highlightedTintColor = [highlightedTintColor retain];
+		
+		if ([self isHighlightedOrSelected])
+			[self setNeedsDisplay];
 	}
 }
 
@@ -325,7 +338,7 @@
 		[_rightAccessoryImage release];
 		_rightAccessoryImage = [rightAccessoryImage retain];
 		
-		if (self.state & UIControlStateNormal)
+		if (self.state == UIControlStateNormal)
 			[self setNeedsDisplay];
 	}
 }
@@ -338,7 +351,7 @@
 		[_rightHighlightedAccessoryImage release];
 		_rightHighlightedAccessoryImage = [rightHighlightedAccessoryImage retain];
 		
-		if (self.state & UIControlStateHighlighted)
+		if ([self isHighlightedOrSelected])
 			[self setNeedsDisplay];
 	}
 }
@@ -500,7 +513,7 @@
 	{
 		[middleColor getRed:&red green:&green blue:&blue alpha:&alpha];
 	}
-	else
+	else if (middleColor)
 	{
 		CGColorRef color = [middleColor CGColor];
 		const CGFloat *components = CGColorGetComponents(color);
