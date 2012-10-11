@@ -8,7 +8,7 @@
 #import <UIKit/UIKit.h>
 
 typedef enum {
-	NVUIGradientButtonStyleDefault = 0,
+	NVUIGradientButtonStyleDefault = 1,
 	NVUIGradientButtonStyleBlackOpaque,
 	NVUIGradientButtonStyleBlackTranslucent
 } NVUIGradientButtonStyle;
