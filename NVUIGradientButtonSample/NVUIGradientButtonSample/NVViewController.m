@@ -46,20 +46,13 @@
 	self.redButton.highlightedTintColor = [UIColor colorWithRed:(CGFloat)190/255 green:0 blue:0 alpha:1];
 	self.redButton.rightAccessoryImage = [UIImage imageNamed:@"arrow"];
 	
+	self.styledButton.text = @"Black Translucent";
+	self.styledButton.style = NVUIGradientButtonStyleBlackTranslucent;
+	
 	self.dynamicButton.text = @"Dynamic";
 	self.dynamicButton.textColor = [UIColor whiteColor];
 	self.dynamicButton.textShadowColor = [UIColor darkGrayColor];
 	[self sliderValueChanged];
-	
-	/// Black Translucent Style
-	CGRect blackTranslucentButtonFrame = CGRectZero;
-	blackTranslucentButtonFrame.origin = CGPointMake(47, 179);
-	blackTranslucentButtonFrame.size = CGSizeMake(227, 45);
-	
-	NVUIGradientButton *blackButton = [[NVUIGradientButton alloc] initWithFrame:blackTranslucentButtonFrame style:NVUIGradientButtonStyleBlackTranslucent];
-	blackButton.text = @"Black Translucent";
-	[self.view addSubview:blackButton];
-	[blackButton release];
 }
 
 

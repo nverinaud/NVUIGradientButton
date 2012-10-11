@@ -1,5 +1,9 @@
 # Changelog
 
+## Release 1.2
+
+* The style property is now a readwrite property.
+
 ## Release 1.1.1
 
 * Fix issues #1 & #2
