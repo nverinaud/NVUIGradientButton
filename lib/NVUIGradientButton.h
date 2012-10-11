@@ -16,7 +16,7 @@ typedef enum {
 
 @interface NVUIGradientButton : UIControl
 
-@property (nonatomic, readonly) NVUIGradientButtonStyle style;
+@property (nonatomic, assign) NVUIGradientButtonStyle style;
 @property (nonatomic) CGFloat cornerRadius; // Default to 10.0
 @property (nonatomic) CGFloat borderWidth; // Default to 2.0
 @property (strong, nonatomic) UIColor *tintColor; // Default to gray
