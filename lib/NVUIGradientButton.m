@@ -55,8 +55,8 @@
 - (void)performDefaultInit
 {
 	// Defaults
-	_highlightedText = [_text retain];
-	_disabledText = [_text retain];
+	_highlightedText = [_text copy];
+	_disabledText = [_text copy];
 	
 	// Label
 	_titleLabel = [[UILabel alloc] init];
@@ -80,41 +80,41 @@
 	{
 		case NVUIGradientButtonStyleBlackOpaque:
 		{
-			_tintColor = [[UIColor alloc] initWithRed:0 green:0 blue:0 alpha:1];
-			_highlightedTintColor = [[UIColor alloc] initWithRed:(CGFloat)3/255 green:(CGFloat)112/255 blue:(CGFloat)236/255 alpha:1];
-			_borderColor = [[UIColor whiteColor] retain];
-			_highlightedBorderColor = [[UIColor whiteColor] retain];
-			_textColor = [[UIColor whiteColor] retain];
-			_highlightedTextColor = [[UIColor whiteColor] retain];
-			_textShadowColor = [[UIColor clearColor] retain];
-			_highlightedTextShadowColor = [[UIColor clearColor] retain];
+			self.tintColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:1];
+			self.highlightedTintColor = [UIColor colorWithRed:(CGFloat)3/255 green:(CGFloat)112/255 blue:(CGFloat)236/255 alpha:1];
+			self.borderColor = [UIColor whiteColor];
+			self.highlightedBorderColor = [UIColor whiteColor];
+			self.textColor = [UIColor whiteColor];
+			self.highlightedTextColor = [UIColor whiteColor];
+			self.textShadowColor = [UIColor clearColor];
+			self.highlightedTextShadowColor = [UIColor clearColor];
 			break;
 		}
 			
 		case NVUIGradientButtonStyleBlackTranslucent:
 		{
-			_tintColor = [[UIColor alloc] initWithRed:0 green:0 blue:0 alpha:0.7];
-			_highlightedTintColor = [[UIColor alloc] initWithRed:(CGFloat)3/255 green:(CGFloat)112/255 blue:(CGFloat)236/255 alpha:0.7];
-			_borderColor = [[UIColor whiteColor] retain];
-			_highlightedBorderColor = [[UIColor whiteColor] retain];
-			_textColor = [[UIColor whiteColor] retain];
-			_highlightedTextColor = [[UIColor whiteColor] retain];
-			_textShadowColor = [[UIColor clearColor] retain];
-			_highlightedTextShadowColor = [[UIColor clearColor] retain];
+			self.tintColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.7];
+			self.highlightedTintColor = [UIColor colorWithRed:(CGFloat)3/255 green:(CGFloat)112/255 blue:(CGFloat)236/255 alpha:0.7];
+			self.borderColor = [UIColor whiteColor];
+			self.highlightedBorderColor = [UIColor whiteColor];
+			self.textColor = [UIColor whiteColor];
+			self.highlightedTextColor = [UIColor whiteColor];
+			self.textShadowColor = [UIColor clearColor];
+			self.highlightedTextShadowColor = [UIColor clearColor];
 			break;
 		}
 			
 		case NVUIGradientButtonStyleDefault:
 		{
 			CGFloat gray = 220.0/255.0;
-			_tintColor = [[UIColor alloc] initWithRed:gray green:gray blue:gray alpha:1];
-			_highlightedTintColor = [[UIColor alloc] initWithRed:0 green:(CGFloat)157/255 blue:1 alpha:1];
-			_borderColor = [[UIColor darkGrayColor] retain];
-			_highlightedBorderColor = [[UIColor whiteColor] retain];
-			_textColor = [[UIColor blackColor] retain];
-			_highlightedTextColor = [[UIColor whiteColor] retain];
-			_textShadowColor = [[UIColor clearColor] retain];
-			_highlightedTextShadowColor = [[UIColor darkGrayColor] retain];
+			self.tintColor = [UIColor colorWithRed:gray green:gray blue:gray alpha:1];
+			self.highlightedTintColor = [UIColor colorWithRed:0 green:(CGFloat)157/255 blue:1 alpha:1];
+			self.borderColor = [UIColor darkGrayColor];
+			self.highlightedBorderColor = [UIColor whiteColor];
+			self.textColor = [UIColor blackColor];
+			self.highlightedTextColor = [UIColor whiteColor];
+			self.textShadowColor = [UIColor clearColor];
+			self.highlightedTextShadowColor = [UIColor darkGrayColor];
 			break;
 		}
 	}
@@ -133,7 +133,8 @@
 		_style = style;
 		
 		[self performDefaultInit];
-		[self updateAccordingToStyle];
+		
+		self.style = style;
     }
     return self;
 }
@@ -177,6 +178,16 @@
 
 
 #pragma mark - Setters
+
+- (void)setStyle:(NVUIGradientButtonStyle)style
+{
+	if (style != _style)
+	{
+		_style = style;
+		[self updateAccordingToStyle];
+	}
+}
+
 
 - (void)setTintColor:(UIColor *)tintColor
 {
