@@ -35,6 +35,8 @@ typedef NS_ENUM(NSUInteger, NVUIGradientButtonStyle)
 @property (nonatomic, getter = isGradientEnabled) BOOL gradientEnabled; // Default to YES, set to NO to draw flat color
 @property (nonatomic, strong) UIImage *rightAccessoryImage;
 @property (nonatomic, strong) UIImage *rightHighlightedAccessoryImage;
+@property (nonatomic, strong) UIImage *leftAccessoryImage;
+@property (nonatomic, strong) UIImage *leftHighlightedAccessoryImage;
 
 // Designated initializer
 - (id)initWithFrame:(CGRect)frame style:(NVUIGradientButtonStyle)style cornerRadius:(CGFloat)cornerRadius borderWidth:(CGFloat)borderWidth andText:(NSString *)text;
@@ -49,5 +51,6 @@ typedef NS_ENUM(NSUInteger, NVUIGradientButtonStyle)
 - (void)setTextShadowColor:(UIColor *)textShadowColor forState:(UIControlState)state;
 - (void)setText:(NSString *)text forState:(UIControlState)state;
 - (void)setRightAccessoryImage:(UIImage *)rightAccessoryImage forState:(UIControlState)state;
+- (void)setLeftAccessoryImage:(UIImage *)leftAccessoryImage forState:(UIControlState)state;
 
 @end

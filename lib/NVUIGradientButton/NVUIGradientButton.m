@@ -17,6 +17,7 @@
 - (UIColor *)textShadowColorAccordingToCurrentState;
 - (NSString *)textAccordingToCurrentState;
 - (UIImage *)rightAccessoryImageAccordingToCurrentState;
+- (UIImage *)leftAccessoryImageAccordingToCurrentState;
 - (CGGradientRef)newGradientAccordingToCurrentState;
 @property (strong, nonatomic, readwrite) UILabel *titleLabel;
 @end
@@ -42,6 +43,8 @@
 	[_titleLabel release];
 	[_rightAccessoryImage release];
 	[_rightHighlightedAccessoryImage release];
+	[_leftAccessoryImage release];
+	[_leftHighlightedAccessoryImage release];
 	
 	[super dealloc];
 }
@@ -357,6 +360,32 @@
 }
 
 
+- (void)setLeftAccessoryImage:(UIImage *)leftAccessoryImage
+{
+	if (leftAccessoryImage != _leftAccessoryImage)
+	{
+		[_leftAccessoryImage release];
+		_leftAccessoryImage = [leftAccessoryImage retain];
+		
+		if (self.state == UIControlStateNormal)
+			[self setNeedsDisplay];
+	}
+}
+
+
+- (void)setLeftHighlightedAccessoryImage:(UIImage *)leftHighlightedAccessoryImage
+{
+	if (leftHighlightedAccessoryImage != _leftHighlightedAccessoryImage)
+	{
+		[_leftHighlightedAccessoryImage release];
+		_leftHighlightedAccessoryImage = [leftHighlightedAccessoryImage retain];
+		
+		if ([self isHighlightedOrSelected])
+			[self setNeedsDisplay];
+	}
+}
+
+
 #pragma mark - Convenience configuration for states
 
 - (BOOL)isHighlightedOrSelected
@@ -425,6 +454,16 @@
 	
 	if (state & UIControlStateHighlighted || state & UIControlStateSelected)
 		self.rightHighlightedAccessoryImage = rightAccessoryImage;
+}
+
+
+- (void)setLeftAccessoryImage:(UIImage *)leftAccessoryImage forState:(UIControlState)state
+{
+	if (state == UIControlStateNormal)
+		self.leftAccessoryImage = leftAccessoryImage;
+	
+	if (state & UIControlStateHighlighted || state & UIControlStateSelected)
+		self.leftHighlightedAccessoryImage = leftAccessoryImage;
 }
 
 
@@ -499,6 +538,17 @@
 }
 
 
+- (UIImage *)leftAccessoryImageAccordingToCurrentState
+{
+	UIImage *image = _leftAccessoryImage;
+	
+	if ([self isHighlightedOrSelected] && _leftHighlightedAccessoryImage)
+		image = _leftHighlightedAccessoryImage;
+	
+	return image;
+}
+
+
 #pragma mark - Gradient
 
 - (CGGradientRef)newGradientAccordingToCurrentState
@@ -560,6 +610,9 @@
 	UIColor *textColor = [self textColorAccordingToCurrentState];
 	UIColor *textShadowColor = [self textShadowColorAccordingToCurrentState];
 	NSString *text = [self textAccordingToCurrentState];
+	UIImage *leftImage = [self leftAccessoryImageAccordingToCurrentState];
+	UIImage *rightImage = [self rightAccessoryImageAccordingToCurrentState];
+	CGFloat maxHeight = CGRectGetHeight(self.bounds) - padding*2;
 	
 	// Draw
 	[path addClip];
@@ -582,12 +635,21 @@
 		[path fill];
 	}
 	
+	// Draw left image
+	CGRect leftAccessoryRect = CGRectZero;
+	if (leftImage)
+	{
+		leftAccessoryRect.size.height = MIN(maxHeight, leftImage.size.height);
+		leftAccessoryRect.size.width = leftAccessoryRect.size.height / leftImage.size.height * leftImage.size.width;
+		leftAccessoryRect.origin.y = (CGRectGetHeight(self.bounds) - CGRectGetHeight(leftAccessoryRect)) / 2;
+		leftAccessoryRect.origin.x = padding;
+		[leftImage drawInRect:leftAccessoryRect];
+	}
+	
 	// Draw right image
-	UIImage *rightImage = [self rightAccessoryImageAccordingToCurrentState];
 	CGRect rightAccessoryRect = CGRectZero;
 	if (rightImage)
 	{
-		CGFloat maxHeight = CGRectGetHeight(self.bounds) - padding*2;
 		rightAccessoryRect.size.height = MIN(maxHeight, rightImage.size.height);
 		rightAccessoryRect.size.width = rightAccessoryRect.size.height / rightImage.size.height * rightImage.size.width;
 		rightAccessoryRect.origin.y = (CGRectGetHeight(self.bounds) - CGRectGetHeight(rightAccessoryRect)) / 2;
@@ -606,8 +668,15 @@
 	// Draw text
 	CGRect innerRect = self.bounds;
 	innerRect = CGRectInset(innerRect, padding, padding);
+	
 	if (rightImage)
 		innerRect.size.width = CGRectGetMinX(rightAccessoryRect);
+	
+	if (leftImage)
+	{
+		innerRect.size.width -= CGRectGetWidth(leftAccessoryRect);
+		innerRect.origin.x = CGRectGetMaxX(leftAccessoryRect);
+	}
 	
 	_titleLabel.textColor = textColor;
 	_titleLabel.shadowColor = textShadowColor;
