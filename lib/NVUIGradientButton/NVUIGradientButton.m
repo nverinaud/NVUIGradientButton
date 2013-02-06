@@ -7,6 +7,13 @@
 
 #import "NVUIGradientButton.h"
 
+#ifdef __has_feature
+	#define OBJC_ARC_ENABLED __has_feature(objc_arc)
+#else
+	#define OBJC_ARC_ENABLED 0
+#endif
+
+
 @interface NVUIGradientButton ()
 - (void)performDefaultInit;
 - (void)updateAccordingToStyle;
@@ -17,6 +24,7 @@
 - (UIColor *)textShadowColorAccordingToCurrentState;
 - (NSString *)textAccordingToCurrentState;
 - (UIImage *)rightAccessoryImageAccordingToCurrentState;
+- (UIImage *)leftAccessoryImageAccordingToCurrentState;
 - (CGGradientRef)newGradientAccordingToCurrentState;
 @property (strong, nonatomic, readwrite) UILabel *titleLabel;
 @end
@@ -26,6 +34,7 @@
 
 #pragma mark - Memory Management
 
+#if !OBJC_ARC_ENABLED
 - (void)dealloc
 {
 	[_tintColor release];
@@ -42,10 +51,12 @@
 	[_titleLabel release];
 	[_rightAccessoryImage release];
 	[_rightHighlightedAccessoryImage release];
+	[_leftAccessoryImage release];
+	[_leftHighlightedAccessoryImage release];
 	
 	[super dealloc];
 }
-
+#endif
 
 #pragma mark - Creation
 
@@ -192,8 +203,12 @@
 {
 	if (tintColor != _tintColor)
 	{
+#if !OBJC_ARC_ENABLED
 		[_tintColor release];
 		_tintColor = [tintColor retain];
+#else
+		_tintColor = tintColor;
+#endif
 		
 		if (self.state == UIControlStateNormal)
 			[self setNeedsDisplay];
@@ -205,8 +220,12 @@
 {
 	if (highlightedTintColor != _highlightedTintColor)
 	{
+#if !OBJC_ARC_ENABLED
 		[_highlightedTintColor release];
 		_highlightedTintColor = [highlightedTintColor retain];
+#else
+		_highlightedTintColor = highlightedTintColor;
+#endif
 		
 		if ([self isHighlightedOrSelected])
 			[self setNeedsDisplay];
@@ -218,8 +237,12 @@
 {
 	if (borderColor != _borderColor)
 	{
+#if !OBJC_ARC_ENABLED
 		[_borderColor release];
 		_borderColor = [borderColor retain];
+#else
+		_borderColor = borderColor;
+#endif
 		
 		if (self.state == UIControlStateNormal)
 			[self setNeedsDisplay];
@@ -231,8 +254,12 @@
 {
 	if (highlightedBorderColor != _highlightedBorderColor)
 	{
+#if !OBJC_ARC_ENABLED
 		[_highlightedBorderColor release];
 		_highlightedBorderColor = [highlightedBorderColor retain];
+#else
+		_highlightedBorderColor = highlightedBorderColor;
+#endif
 		
 		if ([self isHighlightedOrSelected])
 			[self setNeedsDisplay];
@@ -244,8 +271,12 @@
 {
 	if (textColor != _textColor)
 	{
+#if !OBJC_ARC_ENABLED
 		[_textColor release];
 		_textColor = [textColor retain];
+#else
+		_textColor = textColor;
+#endif
 		
 		if (self.state == UIControlStateNormal)
 			[self setNeedsDisplay];
@@ -257,8 +288,12 @@
 {
 	if (highlightedTextColor != _highlightedTextColor)
 	{
+#if !OBJC_ARC_ENABLED
 		[_highlightedTextColor release];
 		_highlightedTextColor = [highlightedTextColor retain];
+#else
+		_highlightedTextColor = highlightedTextColor;
+#endif
 		
 		if ([self isHighlightedOrSelected])
 			[self setNeedsDisplay];
@@ -270,8 +305,12 @@
 {
 	if (textShadowColor != _textShadowColor)
 	{
+#if !OBJC_ARC_ENABLED
 		[_textShadowColor release];
 		_textShadowColor = [textShadowColor retain];
+#else
+		_textShadowColor = textShadowColor;
+#endif
 		
 		if (self.state == UIControlStateNormal)
 			[self setNeedsDisplay];
@@ -283,8 +322,12 @@
 {
 	if (highlightedTextShadowColor != _highlightedTextShadowColor)
 	{
+#if !OBJC_ARC_ENABLED
 		[_highlightedTextShadowColor release];
 		_highlightedTextShadowColor = [highlightedTextShadowColor retain];
+#else
+		_highlightedTextShadowColor = highlightedTextShadowColor;
+#endif
 		
 		if ([self isHighlightedOrSelected])
 			[self setNeedsDisplay];
@@ -296,7 +339,9 @@
 {
 	if (![text isEqualToString:_text])
 	{
+#if !OBJC_ARC_ENABLED
 		[_text release];
+#endif
 		_text = [text copy];
 		
 		if (self.state == UIControlStateNormal)
@@ -309,7 +354,9 @@
 {
 	if (![highlightedText isEqualToString:_highlightedText])
 	{
+#if !OBJC_ARC_ENABLED
 		[_highlightedText release];
+#endif
 		_highlightedText = [highlightedText copy];
 		
 		if ([self isHighlightedOrSelected])
@@ -322,7 +369,9 @@
 {
 	if (![disabledText isEqualToString:_disabledText])
 	{
+#if !OBJC_ARC_ENABLED
 		[_disabledText release];
+#endif
 		_disabledText = [disabledText copy];
 		
 		if (self.state & UIControlStateDisabled)
@@ -335,8 +384,12 @@
 {
 	if (rightAccessoryImage != _rightAccessoryImage)
 	{
+#if !OBJC_ARC_ENABLED
 		[_rightAccessoryImage release];
 		_rightAccessoryImage = [rightAccessoryImage retain];
+#else
+		_rightAccessoryImage = rightAccessoryImage;
+#endif
 		
 		if (self.state == UIControlStateNormal)
 			[self setNeedsDisplay];
@@ -348,8 +401,46 @@
 {
 	if (rightHighlightedAccessoryImage != _rightHighlightedAccessoryImage)
 	{
+#if !OBJC_ARC_ENABLED
 		[_rightHighlightedAccessoryImage release];
 		_rightHighlightedAccessoryImage = [rightHighlightedAccessoryImage retain];
+#else
+		_rightHighlightedAccessoryImage = rightHighlightedAccessoryImage;
+#endif
+		
+		if ([self isHighlightedOrSelected])
+			[self setNeedsDisplay];
+	}
+}
+
+
+- (void)setLeftAccessoryImage:(UIImage *)leftAccessoryImage
+{
+	if (leftAccessoryImage != _leftAccessoryImage)
+	{
+#if !OBJC_ARC_ENABLED
+		[_leftAccessoryImage release];
+		_leftAccessoryImage = [leftAccessoryImage retain];
+#else
+		_leftAccessoryImage = leftAccessoryImage;
+#endif
+		
+		if (self.state == UIControlStateNormal)
+			[self setNeedsDisplay];
+	}
+}
+
+
+- (void)setLeftHighlightedAccessoryImage:(UIImage *)leftHighlightedAccessoryImage
+{
+	if (leftHighlightedAccessoryImage != _leftHighlightedAccessoryImage)
+	{
+#if !OBJC_ARC_ENABLED
+		[_leftHighlightedAccessoryImage release];
+		_leftHighlightedAccessoryImage = [leftHighlightedAccessoryImage retain];
+#else
+		_leftHighlightedAccessoryImage = leftHighlightedAccessoryImage;
+#endif
 		
 		if ([self isHighlightedOrSelected])
 			[self setNeedsDisplay];
@@ -428,6 +519,16 @@
 }
 
 
+- (void)setLeftAccessoryImage:(UIImage *)leftAccessoryImage forState:(UIControlState)state
+{
+	if (state == UIControlStateNormal)
+		self.leftAccessoryImage = leftAccessoryImage;
+	
+	if (state & UIControlStateHighlighted || state & UIControlStateSelected)
+		self.leftHighlightedAccessoryImage = leftAccessoryImage;
+}
+
+
 - (UIColor *)tintColorAccordingToCurrentState
 {
 	UIColor *tintColor = _tintColor;
@@ -499,6 +600,17 @@
 }
 
 
+- (UIImage *)leftAccessoryImageAccordingToCurrentState
+{
+	UIImage *image = _leftAccessoryImage;
+	
+	if ([self isHighlightedOrSelected] && _leftHighlightedAccessoryImage)
+		image = _leftHighlightedAccessoryImage;
+	
+	return image;
+}
+
+
 #pragma mark - Gradient
 
 - (CGGradientRef)newGradientAccordingToCurrentState
@@ -560,6 +672,9 @@
 	UIColor *textColor = [self textColorAccordingToCurrentState];
 	UIColor *textShadowColor = [self textShadowColorAccordingToCurrentState];
 	NSString *text = [self textAccordingToCurrentState];
+	UIImage *leftImage = [self leftAccessoryImageAccordingToCurrentState];
+	UIImage *rightImage = [self rightAccessoryImageAccordingToCurrentState];
+	CGFloat maxHeight = CGRectGetHeight(self.bounds) - padding*2;
 	
 	// Draw
 	[path addClip];
@@ -582,12 +697,21 @@
 		[path fill];
 	}
 	
+	// Draw left image
+	CGRect leftAccessoryRect = CGRectZero;
+	if (leftImage)
+	{
+		leftAccessoryRect.size.height = MIN(maxHeight, leftImage.size.height);
+		leftAccessoryRect.size.width = leftAccessoryRect.size.height / leftImage.size.height * leftImage.size.width;
+		leftAccessoryRect.origin.y = (CGRectGetHeight(self.bounds) - CGRectGetHeight(leftAccessoryRect)) / 2;
+		leftAccessoryRect.origin.x = padding;
+		[leftImage drawInRect:leftAccessoryRect];
+	}
+	
 	// Draw right image
-	UIImage *rightImage = [self rightAccessoryImageAccordingToCurrentState];
 	CGRect rightAccessoryRect = CGRectZero;
 	if (rightImage)
 	{
-		CGFloat maxHeight = CGRectGetHeight(self.bounds) - padding*2;
 		rightAccessoryRect.size.height = MIN(maxHeight, rightImage.size.height);
 		rightAccessoryRect.size.width = rightAccessoryRect.size.height / rightImage.size.height * rightImage.size.width;
 		rightAccessoryRect.origin.y = (CGRectGetHeight(self.bounds) - CGRectGetHeight(rightAccessoryRect)) / 2;
@@ -606,8 +730,15 @@
 	// Draw text
 	CGRect innerRect = self.bounds;
 	innerRect = CGRectInset(innerRect, padding, padding);
+	
 	if (rightImage)
 		innerRect.size.width = CGRectGetMinX(rightAccessoryRect);
+	
+	if (leftImage)
+	{
+		innerRect.size.width -= CGRectGetWidth(leftAccessoryRect);
+		innerRect.origin.x = CGRectGetMaxX(leftAccessoryRect);
+	}
 	
 	_titleLabel.textColor = textColor;
 	_titleLabel.shadowColor = textShadowColor;

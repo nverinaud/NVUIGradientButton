@@ -1,24 +1,29 @@
 # Changelog
 
+## Release 1.3.0
+
+* NEW: it is now possible to specify a left accessory image (for normal & highlighted state)
+* NEW: ARC is conditionnaly supported
+
 ## Release 1.2.1
 
-* Fix a crash happening when a change of the style occured
+* FIX: fix a crash happening when a change of the style occured
 
 ## Release 1.2
 
-* The style property is now a readwrite property
+* UPDATE: the style property is now a readwrite property
 
 ## Release 1.1.1
 
-* Fix issues #1 & #2
-* Use the border width property
-* Add a padding for the title label
-* Do not limit the label to one line by default
-* It is now possible to specify a right accessory image (for normal & highlighted state)
+* FIX: issues [#1](https://github.com/nverinaud/NVUIGradientButton/issues/1) & [#2](https://github.com/nverinaud/NVUIGradientButton/issues/2)
+* FIX: use the border width property
+* ENHANCEMENT: add a padding for the title label
+* ENHANCEMENT: do not limit the label to one line by default
+* NEW: it is now possible to specify a right accessory image (for normal & highlighted state)
 
 ## Release 1.1.0
 
-* Add style to make configuration easier for common needs
+* NEW: add style to make configuration easier for common needs
 
 ## Release 1.0.0
 

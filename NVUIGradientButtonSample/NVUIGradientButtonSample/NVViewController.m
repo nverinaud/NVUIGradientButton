@@ -14,22 +14,6 @@
 
 @implementation NVViewController
 
-- (void)dealloc
-{
-	[_button release];
-	[_disabledButton release];
-	[_redButton release];
-	[_dynamicButton release];
-	[_redSlider release];
-	[_redValueLabel release];
-	[_greenSlider release];
-	[_greenValueLabel release];
-	[_blueSlider release];
-	[_blueValueLabel release];
-	[super dealloc];
-}
-
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -45,6 +29,7 @@
 	self.redButton.tintColor = [UIColor colorWithRed:(CGFloat)120/255 green:0 blue:0 alpha:1];
 	self.redButton.highlightedTintColor = [UIColor colorWithRed:(CGFloat)190/255 green:0 blue:0 alpha:1];
 	self.redButton.rightAccessoryImage = [UIImage imageNamed:@"arrow"];
+	self.redButton.leftAccessoryImage = [UIImage imageNamed:@"arrow_reversed"];
 	
 	self.styledButton.text = @"Black Translucent";
 	self.styledButton.style = NVUIGradientButtonStyleBlackTranslucent;
