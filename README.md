@@ -4,6 +4,10 @@ A beautiful customizable iOS button with gradient.
 
 ![A screenshot rendering NVUIGradient buttons](/nverinaud/NVUIGradientButton/raw/master/images/screen.png)
 
+## Requirements
+
+* You can use ARC or not, this library supports both
+
 ## Usage
 
 * Add `lib/NVUIGradientButton.{h|m}` to your project

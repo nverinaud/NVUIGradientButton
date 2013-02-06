@@ -7,6 +7,13 @@
 
 #import "NVUIGradientButton.h"
 
+#ifdef __has_feature
+	#define OBJC_ARC_ENABLED __has_feature(objc_arc)
+#else
+	#define OBJC_ARC_ENABLED 0
+#endif
+
+
 @interface NVUIGradientButton ()
 - (void)performDefaultInit;
 - (void)updateAccordingToStyle;
@@ -27,6 +34,7 @@
 
 #pragma mark - Memory Management
 
+#if !OBJC_ARC_ENABLED
 - (void)dealloc
 {
 	[_tintColor release];
@@ -48,7 +56,7 @@
 	
 	[super dealloc];
 }
-
+#endif
 
 #pragma mark - Creation
 
@@ -195,8 +203,12 @@
 {
 	if (tintColor != _tintColor)
 	{
+#if !OBJC_ARC_ENABLED
 		[_tintColor release];
 		_tintColor = [tintColor retain];
+#else
+		_tintColor = tintColor;
+#endif
 		
 		if (self.state == UIControlStateNormal)
 			[self setNeedsDisplay];
@@ -208,8 +220,12 @@
 {
 	if (highlightedTintColor != _highlightedTintColor)
 	{
+#if !OBJC_ARC_ENABLED
 		[_highlightedTintColor release];
 		_highlightedTintColor = [highlightedTintColor retain];
+#else
+		_highlightedTintColor = highlightedTintColor;
+#endif
 		
 		if ([self isHighlightedOrSelected])
 			[self setNeedsDisplay];
@@ -221,8 +237,12 @@
 {
 	if (borderColor != _borderColor)
 	{
+#if !OBJC_ARC_ENABLED
 		[_borderColor release];
 		_borderColor = [borderColor retain];
+#else
+		_borderColor = borderColor;
+#endif
 		
 		if (self.state == UIControlStateNormal)
 			[self setNeedsDisplay];
@@ -234,8 +254,12 @@
 {
 	if (highlightedBorderColor != _highlightedBorderColor)
 	{
+#if !OBJC_ARC_ENABLED
 		[_highlightedBorderColor release];
 		_highlightedBorderColor = [highlightedBorderColor retain];
+#else
+		_highlightedBorderColor = highlightedBorderColor;
+#endif
 		
 		if ([self isHighlightedOrSelected])
 			[self setNeedsDisplay];
@@ -247,8 +271,12 @@
 {
 	if (textColor != _textColor)
 	{
+#if !OBJC_ARC_ENABLED
 		[_textColor release];
 		_textColor = [textColor retain];
+#else
+		_textColor = textColor;
+#endif
 		
 		if (self.state == UIControlStateNormal)
 			[self setNeedsDisplay];
@@ -260,8 +288,12 @@
 {
 	if (highlightedTextColor != _highlightedTextColor)
 	{
+#if !OBJC_ARC_ENABLED
 		[_highlightedTextColor release];
 		_highlightedTextColor = [highlightedTextColor retain];
+#else
+		_highlightedTextColor = highlightedTextColor;
+#endif
 		
 		if ([self isHighlightedOrSelected])
 			[self setNeedsDisplay];
@@ -273,8 +305,12 @@
 {
 	if (textShadowColor != _textShadowColor)
 	{
+#if !OBJC_ARC_ENABLED
 		[_textShadowColor release];
 		_textShadowColor = [textShadowColor retain];
+#else
+		_textShadowColor = textShadowColor;
+#endif
 		
 		if (self.state == UIControlStateNormal)
 			[self setNeedsDisplay];
@@ -286,8 +322,12 @@
 {
 	if (highlightedTextShadowColor != _highlightedTextShadowColor)
 	{
+#if !OBJC_ARC_ENABLED
 		[_highlightedTextShadowColor release];
 		_highlightedTextShadowColor = [highlightedTextShadowColor retain];
+#else
+		_highlightedTextShadowColor = highlightedTextShadowColor;
+#endif
 		
 		if ([self isHighlightedOrSelected])
 			[self setNeedsDisplay];
@@ -299,7 +339,9 @@
 {
 	if (![text isEqualToString:_text])
 	{
+#if !OBJC_ARC_ENABLED
 		[_text release];
+#endif
 		_text = [text copy];
 		
 		if (self.state == UIControlStateNormal)
@@ -312,7 +354,9 @@
 {
 	if (![highlightedText isEqualToString:_highlightedText])
 	{
+#if !OBJC_ARC_ENABLED
 		[_highlightedText release];
+#endif
 		_highlightedText = [highlightedText copy];
 		
 		if ([self isHighlightedOrSelected])
@@ -325,7 +369,9 @@
 {
 	if (![disabledText isEqualToString:_disabledText])
 	{
+#if !OBJC_ARC_ENABLED
 		[_disabledText release];
+#endif
 		_disabledText = [disabledText copy];
 		
 		if (self.state & UIControlStateDisabled)
@@ -338,8 +384,12 @@
 {
 	if (rightAccessoryImage != _rightAccessoryImage)
 	{
+#if !OBJC_ARC_ENABLED
 		[_rightAccessoryImage release];
 		_rightAccessoryImage = [rightAccessoryImage retain];
+#else
+		_rightAccessoryImage = rightAccessoryImage;
+#endif
 		
 		if (self.state == UIControlStateNormal)
 			[self setNeedsDisplay];
@@ -351,8 +401,12 @@
 {
 	if (rightHighlightedAccessoryImage != _rightHighlightedAccessoryImage)
 	{
+#if !OBJC_ARC_ENABLED
 		[_rightHighlightedAccessoryImage release];
 		_rightHighlightedAccessoryImage = [rightHighlightedAccessoryImage retain];
+#else
+		_rightHighlightedAccessoryImage = rightHighlightedAccessoryImage;
+#endif
 		
 		if ([self isHighlightedOrSelected])
 			[self setNeedsDisplay];
@@ -364,8 +418,12 @@
 {
 	if (leftAccessoryImage != _leftAccessoryImage)
 	{
+#if !OBJC_ARC_ENABLED
 		[_leftAccessoryImage release];
 		_leftAccessoryImage = [leftAccessoryImage retain];
+#else
+		_leftAccessoryImage = leftAccessoryImage;
+#endif
 		
 		if (self.state == UIControlStateNormal)
 			[self setNeedsDisplay];
@@ -377,8 +435,12 @@
 {
 	if (leftHighlightedAccessoryImage != _leftHighlightedAccessoryImage)
 	{
+#if !OBJC_ARC_ENABLED
 		[_leftHighlightedAccessoryImage release];
 		_leftHighlightedAccessoryImage = [leftHighlightedAccessoryImage retain];
+#else
+		_leftHighlightedAccessoryImage = leftHighlightedAccessoryImage;
+#endif
 		
 		if ([self isHighlightedOrSelected])
 			[self setNeedsDisplay];

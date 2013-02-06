@@ -14,22 +14,6 @@
 
 @implementation NVViewController
 
-- (void)dealloc
-{
-	[_button release];
-	[_disabledButton release];
-	[_redButton release];
-	[_dynamicButton release];
-	[_redSlider release];
-	[_redValueLabel release];
-	[_greenSlider release];
-	[_greenValueLabel release];
-	[_blueSlider release];
-	[_blueValueLabel release];
-	[super dealloc];
-}
-
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
