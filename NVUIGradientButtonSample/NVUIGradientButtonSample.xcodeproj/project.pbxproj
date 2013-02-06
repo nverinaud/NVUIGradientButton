@@ -7,9 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		371D89991600B73B000B4BDA /* CHANGELOG.md in Resources */ = {isa = PBXBuildFile; fileRef = 371D89961600B73B000B4BDA /* CHANGELOG.md */; };
-		371D899A1600B73B000B4BDA /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 371D89971600B73B000B4BDA /* README.md */; };
-		371D899B1600B73B000B4BDA /* VERSION in Resources */ = {isa = PBXBuildFile; fileRef = 371D89981600B73B000B4BDA /* VERSION */; };
 		371F8EC41591ED3E00A6082F /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 371F8EC31591ED3E00A6082F /* UIKit.framework */; };
 		371F8EC61591ED3E00A6082F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 371F8EC51591ED3E00A6082F /* Foundation.framework */; };
 		371F8EC81591ED3E00A6082F /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 371F8EC71591ED3E00A6082F /* CoreGraphics.framework */; };
@@ -45,6 +42,7 @@
 		3771964C16C269050008E988 /* NVUIGradientButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NVUIGradientButton.m; sourceTree = "<group>"; };
 		3771964E16C26C0C0008E988 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-568h@2x.png"; path = "../Default-568h@2x.png"; sourceTree = "<group>"; };
 		3771965016C26CD50008E988 /* arrow_reversed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = arrow_reversed.png; sourceTree = "<group>"; };
+		3771965216C271960008E988 /* NVUIGradientButton.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; name = NVUIGradientButton.podspec; path = ../NVUIGradientButton.podspec; sourceTree = "<group>"; };
 		378EF69315F6084B007FD971 /* arrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = arrow.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -72,6 +70,7 @@
 				371D89961600B73B000B4BDA /* CHANGELOG.md */,
 				371D89971600B73B000B4BDA /* README.md */,
 				371D89981600B73B000B4BDA /* VERSION */,
+				3771965216C271960008E988 /* NVUIGradientButton.podspec */,
 			);
 			sourceTree = "<group>";
 		};
@@ -193,9 +192,6 @@
 				371F8ECE1591ED3E00A6082F /* InfoPlist.strings in Resources */,
 				371F8EDA1591ED3F00A6082F /* NVViewController_iPhone.xib in Resources */,
 				378EF69415F6084B007FD971 /* arrow.png in Resources */,
-				371D89991600B73B000B4BDA /* CHANGELOG.md in Resources */,
-				371D899A1600B73B000B4BDA /* README.md in Resources */,
-				371D899B1600B73B000B4BDA /* VERSION in Resources */,
 				3771964F16C26C0C0008E988 /* Default-568h@2x.png in Resources */,
 				3771965116C26CD50008E988 /* arrow_reversed.png in Resources */,
 			);
