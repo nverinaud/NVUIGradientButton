@@ -9,6 +9,9 @@
 #import "NVViewController.h"
 
 @interface NVViewController ()
+
+@property (strong, nonatomic) NVUIGradientButton *disabledButton; // created programmatically
+
 @end
 
 
@@ -20,9 +23,17 @@
 	
 	self.button.text = @"Default";
 	
+	// Create a button programmatically
+	self.disabledButton = [[NVUIGradientButton alloc] initWithFrame:self.button.frame style:NVUIGradientButtonStyleDefault];
+	self.disabledButton.autoresizingMask = self.button.autoresizingMask;
 	self.disabledButton.text = @"Disabled";
 	self.disabledButton.enabled = NO;
+	CGRect frame = self.disabledButton.frame;
+	frame.origin.y = CGRectGetMaxY(self.button.frame) + 8;
+	self.disabledButton.frame = frame;
+	[self.view addSubview:self.disabledButton];
 	
+	// Customize a button with accessory images
 	self.redButton.text = @"Red";
 	self.redButton.textColor = [UIColor whiteColor];
 	self.redButton.textShadowColor = [UIColor darkGrayColor];
@@ -31,12 +42,15 @@
 	self.redButton.rightAccessoryImage = [UIImage imageNamed:@"arrow"];
 	self.redButton.leftAccessoryImage = [UIImage imageNamed:@"arrow_reversed"];
 	
+	// Change the style of a button
 	self.styledButton.text = @"Black Translucent";
 	self.styledButton.style = NVUIGradientButtonStyleBlackTranslucent;
 	
+	// The dynamic button
 	self.dynamicButton.text = @"Dynamic";
 	self.dynamicButton.textColor = [UIColor whiteColor];
 	self.dynamicButton.textShadowColor = [UIColor darkGrayColor];
+	
 	[self sliderValueChanged];
 }
 

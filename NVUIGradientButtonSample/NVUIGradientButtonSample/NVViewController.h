@@ -13,7 +13,6 @@
 @interface NVViewController : UIViewController
 
 @property (strong, nonatomic) IBOutlet NVUIGradientButton *button;
-@property (strong, nonatomic) IBOutlet NVUIGradientButton *disabledButton;
 @property (strong, nonatomic) IBOutlet NVUIGradientButton *redButton;
 @property (strong, nonatomic) IBOutlet NVUIGradientButton *styledButton;
 @property (strong, nonatomic) IBOutlet NVUIGradientButton *dynamicButton;
