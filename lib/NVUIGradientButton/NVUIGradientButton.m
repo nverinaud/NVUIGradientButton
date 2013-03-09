@@ -27,6 +27,7 @@
 - (UIImage *)leftAccessoryImageAccordingToCurrentState;
 - (CGGradientRef)newGradientAccordingToCurrentState;
 @property (strong, nonatomic, readwrite) UILabel *titleLabel;
+@property (strong, nonatomic, readwrite) UILabel *accessoryLabel;
 @end
 
 
@@ -49,6 +50,7 @@
 	[_highlightedText release];
 	[_disabledText release];
 	[_titleLabel release];
+	[_accessoryLabel release];
 	[_rightAccessoryImage release];
 	[_rightHighlightedAccessoryImage release];
 	[_leftAccessoryImage release];
@@ -78,6 +80,16 @@
 	_titleLabel.minimumFontSize = 12.0;
 	_titleLabel.shadowOffset = CGSizeMake(0, -1);
 	
+    // accessory label
+    _accessoryLabel = [[UILabel alloc] init];
+    _accessoryLabel.textAlignment = UITextAlignmentRight;
+    _accessoryLabel.lineBreakMode = UILineBreakModeTailTruncation;
+    _accessoryLabel.numberOfLines = 0;
+    _accessoryLabel.font = [UIFont boldSystemFontOfSize:15.0];
+    _accessoryLabel.minimumFontSize = 12.0;
+    _accessoryLabel.shadowOffset = CGSizeMake(0, -1);
+    _accessoryLabel.hidden = YES;
+
 	_gradientEnabled = YES;
 	
 	self.opaque = NO;
@@ -345,6 +357,21 @@
 		_text = [text copy];
 		
 		if (self.state == UIControlStateNormal)
+			[self setNeedsDisplay];
+	}
+}
+
+- (void)setAccessoryText:(NSString *)accessoryText
+{
+	if (![accessoryText isEqualToString:_accessoryText])
+	{
+#if !OBJC_ARC_ENABLED
+		[_accessoryText release];
+#endif
+        _accessoryText = [accessoryText copy];
+        self.accessoryLabel.hidden = [accessoryText length] == 0;
+
+        if (self.state == UIControlStateNormal)
 			[self setNeedsDisplay];
 	}
 }
@@ -746,6 +773,15 @@
 	
 	[textColor set];
 	[_titleLabel drawTextInRect:innerRect];
+
+    if (!_accessoryLabel.hidden) {
+	    _accessoryLabel.textColor = textColor;
+	    _accessoryLabel.shadowColor = textShadowColor;
+	    _accessoryLabel.text = _accessoryText;
+	
+	    [textColor set];
+	    [_accessoryLabel drawTextInRect:innerRect];
+    }
 }
 
 
