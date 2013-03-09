@@ -29,9 +29,11 @@ typedef NS_ENUM(NSUInteger, NVUIGradientButtonStyle)
 @property (strong, nonatomic) UIColor *textShadowColor; // Default to clear
 @property (strong, nonatomic) UIColor *highlightedTextShadowColor; // Default to darkGrey
 @property (copy, nonatomic) NSString *text;
+@property (copy, nonatomic) NSString *accessoryText;
 @property (copy, nonatomic) NSString *highlightedText; // Default to text
 @property (copy, nonatomic) NSString *disabledText; // Default to text
 @property (strong, nonatomic, readonly) UILabel *titleLabel;
+@property (strong, nonatomic, readonly) UILabel *accessoryLabel;
 @property (nonatomic, getter = isGradientEnabled) BOOL gradientEnabled; // Default to YES, set to NO to draw flat color
 @property (nonatomic, strong) UIImage *rightAccessoryImage;
 @property (nonatomic, strong) UIImage *rightHighlightedAccessoryImage;
