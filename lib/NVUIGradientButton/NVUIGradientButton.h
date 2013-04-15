@@ -31,6 +31,9 @@ typedef NS_ENUM(NSUInteger, NVUIGradientButtonStyle)
 @property (copy, nonatomic) NSString *text;
 @property (copy, nonatomic) NSString *highlightedText; // Default to text
 @property (copy, nonatomic) NSString *disabledText; // Default to text
+@property (copy, nonatomic) NSAttributedString *attributedText;
+@property (copy, nonatomic) NSAttributedString *highlightedAttributedText; // Default to attributedText
+@property (copy, nonatomic) NSAttributedString *disabledAttributedText; // Default to attributedText
 @property (strong, nonatomic, readonly) UILabel *titleLabel;
 @property (nonatomic, getter = isGradientEnabled) BOOL gradientEnabled; // Default to YES, set to NO to draw flat color
 @property (nonatomic, strong) UIImage *rightAccessoryImage;
@@ -50,6 +53,7 @@ typedef NS_ENUM(NSUInteger, NVUIGradientButtonStyle)
 - (void)setTextColor:(UIColor *)textColor forState:(UIControlState)state;
 - (void)setTextShadowColor:(UIColor *)textShadowColor forState:(UIControlState)state;
 - (void)setText:(NSString *)text forState:(UIControlState)state;
+- (void)setAttributedText:(NSAttributedString *)attributedText forState:(UIControlState)state;
 - (void)setRightAccessoryImage:(UIImage *)rightAccessoryImage forState:(UIControlState)state;
 - (void)setLeftAccessoryImage:(UIImage *)leftAccessoryImage forState:(UIControlState)state;
 
