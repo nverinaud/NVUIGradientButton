@@ -48,6 +48,9 @@
 	[_text release];
 	[_highlightedText release];
 	[_disabledText release];
+	[_attributedText release];
+	[_highlightedAttributedText release];
+	[_disabledAttributedText release];
 	[_titleLabel release];
 	[_rightAccessoryImage release];
 	[_rightHighlightedAccessoryImage release];
@@ -68,6 +71,8 @@
 	// Defaults
 	_highlightedText = [_text copy];
 	_disabledText = [_text copy];
+	_highlightedAttributedText = [_attributedText copy];
+	_disabledAttributedText = [_attributedText copy];
 	
 	// Label
 	_titleLabel = [[UILabel alloc] init];
@@ -380,6 +385,50 @@
 }
 
 
+- (void)setAttributedText:(NSAttributedString *)attributedText
+{
+	if (![attributedText isEqualToAttributedString:_attributedText])
+	{
+#if !OBJC_ARC_ENABLED
+		[_attributedText release];
+#endif
+		_attributedText = [attributedText copy];
+
+		if (self.state == UIControlStateNormal)
+			[self setNeedsDisplay];
+	}
+}
+
+- (void)setHighlightedAttributedText:(NSAttributedString *)highlightedAttributedText
+{
+	if (![highlightedAttributedText isEqualToAttributedString:_highlightedAttributedText])
+	{
+#if !OBJC_ARC_ENABLED
+		[_highlightedAttributedText release];
+#endif
+		_highlightedAttributedText = [highlightedAttributedText copy];
+
+		if (self.state == UIControlStateNormal)
+			[self setNeedsDisplay];
+	}
+}
+
+
+- (void)setDisabledAttributedText:(NSAttributedString *)disabledAttributedText
+{
+	if (![disabledAttributedText isEqualToAttributedString:_disabledAttributedText])
+	{
+#if !OBJC_ARC_ENABLED
+		[_disabledAttributedText release];
+#endif
+		_disabledAttributedText = [disabledAttributedText copy];
+
+		if (self.state == UIControlStateNormal)
+			[self setNeedsDisplay];
+	}
+}
+
+
 - (void)setRightAccessoryImage:(UIImage *)rightAccessoryImage
 {
 	if (rightAccessoryImage != _rightAccessoryImage)
@@ -509,6 +558,19 @@
 }
 
 
+- (void)setAttributedText:(NSAttributedString *)attributedText forState:(UIControlState)state
+{
+	if (state == UIControlStateNormal)
+		self.attributedText = attributedText;
+
+	if (state & UIControlStateDisabled)
+		self.disabledAttributedText = attributedText;
+
+	if (state & UIControlStateHighlighted || state & UIControlStateSelected)
+		self.highlightedAttributedText = attributedText;
+}
+
+
 - (void)setRightAccessoryImage:(UIImage *)rightAccessoryImage forState:(UIControlState)state
 {
 	if (state == UIControlStateNormal)
@@ -586,6 +648,19 @@
 		text = _highlightedText;
 	
 	return text;
+}
+
+
+- (NSAttributedString *)attributedTextAccordingToCurrentState
+{
+	NSAttributedString *attributedText = _attributedText;
+
+	if (!self.enabled && _disabledAttributedText)
+		attributedText = _disabledAttributedText;
+	else if ([self isHighlightedOrSelected] && _highlightedAttributedText)
+		attributedText = _highlightedAttributedText;
+
+	return attributedText;
 }
 
 
@@ -672,6 +747,7 @@
 	UIColor *textColor = [self textColorAccordingToCurrentState];
 	UIColor *textShadowColor = [self textShadowColorAccordingToCurrentState];
 	NSString *text = [self textAccordingToCurrentState];
+	NSAttributedString *attributedText = [self attributedTextAccordingToCurrentState];
 	UIImage *leftImage = [self leftAccessoryImageAccordingToCurrentState];
 	UIImage *rightImage = [self rightAccessoryImageAccordingToCurrentState];
 	CGFloat maxHeight = CGRectGetHeight(self.bounds) - padding*2;
@@ -739,12 +815,19 @@
 		innerRect.size.width -= CGRectGetWidth(leftAccessoryRect);
 		innerRect.origin.x = CGRectGetMaxX(leftAccessoryRect);
 	}
+
+	if (attributedText && [_titleLabel respondsToSelector:@selector(attributedText)])
+	{
+		_titleLabel.attributedText = attributedText;
+	}
+	else
+	{
+		_titleLabel.textColor = textColor;
+		_titleLabel.shadowColor = textShadowColor;
+		_titleLabel.text = text;
+		[textColor set];
+	}
 	
-	_titleLabel.textColor = textColor;
-	_titleLabel.shadowColor = textShadowColor;
-	_titleLabel.text = text;
-	
-	[textColor set];
 	[_titleLabel drawTextInRect:innerRect];
 }
 
