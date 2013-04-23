@@ -1,5 +1,9 @@
 # Changelog
 
+## Release 1.4.0
+
+* NEW: it is now possible to use attributed text (thanks to [Dean Moore](https://github.com/moored))
+
 ## Release 1.3.0
 
 * NEW: it is now possible to specify a left accessory image (for normal & highlighted state)

@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "NVUIGradientButton"
-  s.version      = "1.3.0"
+  s.version      = "1.4.0"
   s.summary      = "A beautiful customizable iOS button with gradient."
   s.description  = <<-DESC
                     # NVUIGradientButton
@@ -28,7 +28,7 @@ Pod::Spec.new do |s|
   s.homepage     = "https://github.com/nverinaud/NVUIGradientButton"
   s.license      = 'MIT'
   s.author       = { "Nicolas VERINAUD" => "n.verinaud@gmail.com" }
-  s.source       = { :git => "https://github.com/nverinaud/NVUIGradientButton.git", :tag => "v1.3.0" }
+  s.source       = { :git => "https://github.com/nverinaud/NVUIGradientButton.git", :tag => "v1.4.0" }
   s.platform     = :ios
   s.source_files = 'lib', 'lib/**/*.{h,m}'
 
