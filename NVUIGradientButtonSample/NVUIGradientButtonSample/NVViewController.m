@@ -10,7 +10,7 @@
 
 @interface NVViewController ()
 
-@property (strong, nonatomic) NVUIGradientButton *disabledButton; // created programmatically
+@property (strong, nonatomic) NVUIGradientButton *attributedStringButton; // created programmatically
 
 @end
 
@@ -24,14 +24,49 @@
 	self.button.text = @"Default";
 	
 	// Create a button programmatically
-	self.disabledButton = [[NVUIGradientButton alloc] initWithFrame:self.button.frame style:NVUIGradientButtonStyleDefault];
-	self.disabledButton.autoresizingMask = self.button.autoresizingMask;
-	self.disabledButton.text = @"Disabled";
-	self.disabledButton.enabled = NO;
-	CGRect frame = self.disabledButton.frame;
+	self.attributedStringButton = [[NVUIGradientButton alloc] initWithFrame:self.button.frame style:NVUIGradientButtonStyleDefault];
+	self.attributedStringButton.autoresizingMask = self.button.autoresizingMask;
+	
+	if ([UILabel instancesRespondToSelector:@selector(attributedText)]) // iOS 6+
+	{
+		// Normal
+		NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:@"Attributed"];
+		NSRange total = NSMakeRange(0, str.length);
+		NSMutableDictionary *attributes = [@{
+			NSUnderlineStyleAttributeName : @(NSUnderlineStyleSingle),
+			NSFontAttributeName : [UIFont systemFontOfSize:17.f],
+			NSForegroundColorAttributeName : UIColor.blackColor
+		} mutableCopy];
+		
+		[str setAttributes:attributes range:total];
+		[str setAttributes:@{ NSFontAttributeName : [UIFont boldSystemFontOfSize:17.f] } range:NSMakeRange(0, 1)];
+		self.attributedStringButton.attributedText = str;
+		
+		// Highlighted
+		NSShadow *shadow = [[NSShadow alloc] init];
+		shadow.shadowOffset = CGSizeMake(0, -1);
+		shadow.shadowColor = [UIColor blackColor];
+		[attributes setObject:UIColor.whiteColor forKey:NSForegroundColorAttributeName];
+		[attributes setObject:shadow forKey:NSShadowAttributeName];
+		[str setAttributes:attributes range:total];
+		
+		[attributes setObject:[UIFont boldSystemFontOfSize:17.f] forKey:NSFontAttributeName];
+		[attributes removeObjectForKey:NSUnderlineStyleAttributeName];
+		[str setAttributes:attributes range:NSMakeRange(0, 1)];
+		
+		self.attributedStringButton.highlightedAttributedText = str;
+	}
+	else
+	{
+		self.attributedStringButton.text = @"Disabled";
+		self.attributedStringButton.enabled = NO;
+	}
+	
+	CGRect frame = self.attributedStringButton.frame;
 	frame.origin.y = CGRectGetMaxY(self.button.frame) + 8;
-	self.disabledButton.frame = frame;
-	[self.view addSubview:self.disabledButton];
+	self.attributedStringButton.frame = frame;
+	
+	[self.view addSubview:self.attributedStringButton];
 	
 	// Customize a button with accessory images
 	self.redButton.text = @"Red";
@@ -91,7 +126,7 @@
     [super viewDidUnload];
 	
 	self.button = nil;
-	self.disabledButton = nil;
+	self.attributedStringButton = nil;
 	self.redButton = nil;
 	self.dynamicButton = nil;
 	self.redSlider = nil;

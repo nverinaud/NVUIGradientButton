@@ -816,14 +816,18 @@
 		innerRect.origin.x = CGRectGetMaxX(leftAccessoryRect);
 	}
 
-	if (attributedText) {
+	if (attributedText && [_titleLabel respondsToSelector:@selector(attributedText)])
+	{
 		_titleLabel.attributedText = attributedText;
-	} else {
+	}
+	else
+	{
 		_titleLabel.textColor = textColor;
 		_titleLabel.shadowColor = textShadowColor;
 		_titleLabel.text = text;
 		[textColor set];
 	}
+	
 	[_titleLabel drawTextInRect:innerRect];
 }
 
