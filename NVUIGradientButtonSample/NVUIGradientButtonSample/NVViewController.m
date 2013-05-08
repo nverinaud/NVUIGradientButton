@@ -121,6 +121,12 @@
 }
 
 
+- (IBAction)switchValueChanged:(UISwitch *)sender
+{
+	self.dynamicButton.glossy = sender.on;
+}
+
+
 - (void)viewDidUnload
 {
     [super viewDidUnload];

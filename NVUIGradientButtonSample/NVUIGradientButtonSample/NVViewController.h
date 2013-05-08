@@ -26,5 +26,6 @@
 
 - (IBAction)sliderValueChanged;
 - (IBAction)segmentedControlValueChanged:(UISegmentedControl *)sender;
+- (IBAction)switchValueChanged:(UISwitch *)sender;
 
 @end

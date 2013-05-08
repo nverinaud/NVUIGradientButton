@@ -14,6 +14,28 @@
 #endif
 
 
+static CGGradientRef NVCGGradientCreate(CGColorRef startColor, CGColorRef endColor)
+{
+	CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+    CGFloat locations[] = { 0.0, 1.0 };
+#if OBJC_ARC_ENABLED
+    NSArray *colors = @[(__bridge id) startColor, (__bridge id) endColor];
+#else
+	NSArray *colors = @[(id)startColor, (id)endColor];
+#endif
+	
+#if OBJC_ARC_ENABLED
+    CGGradientRef gradient = CGGradientCreateWithColors(colorSpace, (__bridge CFArrayRef) colors, locations);
+#else
+	CGGradientRef gradient = CGGradientCreateWithColors(colorSpace, (CFArrayRef) colors, locations);
+#endif
+	
+	CGColorSpaceRelease(colorSpace);
+	
+	return gradient;
+}
+
+
 @interface NVUIGradientButton ()
 - (void)performDefaultInit;
 - (void)updateAccordingToStyle;
@@ -27,6 +49,10 @@
 - (UIImage *)leftAccessoryImageAccordingToCurrentState;
 - (CGGradientRef)newGradientAccordingToCurrentState;
 @property (strong, nonatomic, readwrite) UILabel *titleLabel;
+
+// Glossy additions
+@property (nonatomic, strong) UIColor *glossyStartColor;
+@property (nonatomic, strong) UIColor *glossyEndColor;
 @end
 
 
@@ -56,6 +82,8 @@
 	[_rightHighlightedAccessoryImage release];
 	[_leftAccessoryImage release];
 	[_leftHighlightedAccessoryImage release];
+	[_glossyStartColor release];
+	[_glossyEndColor release];
 	
 	[super dealloc];
 }
@@ -84,6 +112,10 @@
 	_titleLabel.shadowOffset = CGSizeMake(0, -1);
 	
 	_gradientEnabled = YES;
+	
+	_glossy = NO;
+	_glossyStartColor = [[UIColor alloc] initWithWhite:1 alpha:0.35];
+	_glossyEndColor = [[UIColor alloc] initWithWhite:1 alpha:0.1];
 	
 	self.opaque = NO;
 	self.backgroundColor = [UIColor clearColor];
@@ -399,6 +431,7 @@
 	}
 }
 
+
 - (void)setHighlightedAttributedText:(NSAttributedString *)highlightedAttributedText
 {
 	if (![highlightedAttributedText isEqualToAttributedString:_highlightedAttributedText])
@@ -425,6 +458,26 @@
 
 		if (self.state == UIControlStateNormal)
 			[self setNeedsDisplay];
+	}
+}
+
+
+- (void)setGradientEnabled:(BOOL)gradientEnabled
+{
+	if (gradientEnabled != _gradientEnabled)
+	{
+		_gradientEnabled = gradientEnabled;
+		[self setNeedsDisplay];
+	}
+}
+
+
+- (void)setGlossy:(BOOL)glossy
+{
+	if (glossy != _glossy)
+	{
+		_glossy = glossy;
+		[self setNeedsDisplay];
 	}
 }
 
@@ -756,13 +809,11 @@
 	[path addClip];
 	
 	// Draw background
+	CGPoint startPoint = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMinY(self.bounds));
+	CGPoint endPoint = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMaxY(self.bounds));
 	if (_gradientEnabled)
 	{
 		CGGradientRef gradient = [self newGradientAccordingToCurrentState];
-		CGFloat midX = CGRectGetMidX(self.bounds);
-		CGFloat botY = CGRectGetMaxY(self.bounds);
-		CGPoint startPoint = CGPointMake(midX, 0);
-		CGPoint endPoint = CGPointMake(midX, botY);
 		CGContextDrawLinearGradient(ctx, gradient, startPoint, endPoint, 0);
 		CGGradientRelease(gradient);
 	}
@@ -771,6 +822,15 @@
 		UIColor *tint = [self tintColorAccordingToCurrentState];
 		[tint set];
 		[path fill];
+	}
+	
+	// Glossy
+	if (_glossy)
+	{
+		CGGradientRef gradient = NVCGGradientCreate(_glossyStartColor.CGColor, _glossyEndColor.CGColor);
+		endPoint.y /= 2;
+		CGContextDrawLinearGradient(ctx, gradient, startPoint, endPoint, 0);
+		CGGradientRelease(gradient);
 	}
 	
 	// Draw left image
