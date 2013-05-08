@@ -1,5 +1,10 @@
 # Changelog
 
+## Release 1.5.0
+
+* NEW: a nice glossy effect may be set using the `glossy` property
+* NEW: UIAppearance is now supported, `gradientEnabled` and `glossy` are now `NSInteger` but should be used as `BOOL`
+
 ## Release 1.4.0
 
 * NEW: it is now possible to use attributed text (thanks to [Dean Moore](https://github.com/moored))

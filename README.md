@@ -7,6 +7,7 @@ A beautiful customizable iOS button with gradient.
 ## Requirements
 
 * You can use ARC or not, this library supports both
+* iOS 4+
 
 ## Usage
 
@@ -18,4 +19,4 @@ For more examples, have a look at the `NVUIGradientButtonSample` project.
 
 ## License
 
-Copyright (c) 2012 [Nicolas VERINAUD](http://www.nverinaud.com). Released under the MIT license.
+Copyright (c) 2013 [Nicolas VERINAUD](http://www.nverinaud.com). Released under the MIT license.

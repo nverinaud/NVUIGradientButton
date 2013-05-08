@@ -14,6 +14,28 @@
 #endif
 
 
+static CGGradientRef NVCGGradientCreate(CGColorRef startColor, CGColorRef endColor)
+{
+	CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+    CGFloat locations[] = { 0.0, 1.0 };
+#if OBJC_ARC_ENABLED
+    NSArray *colors = @[(__bridge id) startColor, (__bridge id) endColor];
+#else
+	NSArray *colors = @[(id)startColor, (id)endColor];
+#endif
+	
+#if OBJC_ARC_ENABLED
+    CGGradientRef gradient = CGGradientCreateWithColors(colorSpace, (__bridge CFArrayRef) colors, locations);
+#else
+	CGGradientRef gradient = CGGradientCreateWithColors(colorSpace, (CFArrayRef) colors, locations);
+#endif
+	
+	CGColorSpaceRelease(colorSpace);
+	
+	return gradient;
+}
+
+
 @interface NVUIGradientButton ()
 - (void)performDefaultInit;
 - (void)updateAccordingToStyle;
@@ -27,10 +49,36 @@
 - (UIImage *)leftAccessoryImageAccordingToCurrentState;
 - (CGGradientRef)newGradientAccordingToCurrentState;
 @property (strong, nonatomic, readwrite) UILabel *titleLabel;
+
+// Glossy additions
+@property (nonatomic, strong) UIColor *glossyStartColor;
+@property (nonatomic, strong) UIColor *glossyEndColor;
 @end
 
 
 @implementation NVUIGradientButton
+
+#pragma mark - UIAppearance
+
++ (void)initialize
+{
+	if (self == NVUIGradientButton.class && [self conformsToProtocol:@protocol(UIAppearance)])
+	{
+		id appearance = [self appearance];
+		CGFloat gray = 220.0/255.0;
+		
+		[appearance setTintColor:[UIColor colorWithRed:gray green:gray blue:gray alpha:1]];
+		[appearance setHighlightedTintColor:[UIColor colorWithRed:0 green:(CGFloat)157/255 blue:1 alpha:1]];
+		[appearance setBorderColor:[UIColor darkGrayColor]];
+		[appearance setHighlightedBorderColor:[UIColor whiteColor]];
+		[appearance setTextColor:[UIColor blackColor]];
+		[appearance setHighlightedTextColor:[UIColor whiteColor]];
+		[appearance setTextShadowColor:[UIColor clearColor]];
+		[appearance setHighlightedTextShadowColor:[UIColor darkGrayColor]];
+		[appearance setGradientEnabled:YES];
+		[appearance setGlossy:NO];
+	}
+}
 
 #pragma mark - Memory Management
 
@@ -56,6 +104,8 @@
 	[_rightHighlightedAccessoryImage release];
 	[_leftAccessoryImage release];
 	[_leftHighlightedAccessoryImage release];
+	[_glossyStartColor release];
+	[_glossyEndColor release];
 	
 	[super dealloc];
 }
@@ -83,7 +133,14 @@
 	_titleLabel.minimumFontSize = 12.0;
 	_titleLabel.shadowOffset = CGSizeMake(0, -1);
 	
-	_gradientEnabled = YES;
+	if (![[self class] conformsToProtocol:@protocol(UIAppearance)])
+	{
+		_gradientEnabled = YES;
+		_glossy = NO;
+	}
+	
+	_glossyStartColor = [[UIColor alloc] initWithWhite:1 alpha:0.35];
+	_glossyEndColor = [[UIColor alloc] initWithWhite:1 alpha:0.1];
 	
 	self.opaque = NO;
 	self.backgroundColor = [UIColor clearColor];
@@ -122,15 +179,36 @@
 			
 		case NVUIGradientButtonStyleDefault:
 		{
-			CGFloat gray = 220.0/255.0;
-			self.tintColor = [UIColor colorWithRed:gray green:gray blue:gray alpha:1];
-			self.highlightedTintColor = [UIColor colorWithRed:0 green:(CGFloat)157/255 blue:1 alpha:1];
-			self.borderColor = [UIColor darkGrayColor];
-			self.highlightedBorderColor = [UIColor whiteColor];
-			self.textColor = [UIColor blackColor];
-			self.highlightedTextColor = [UIColor whiteColor];
-			self.textShadowColor = [UIColor clearColor];
-			self.highlightedTextShadowColor = [UIColor darkGrayColor];
+			if (![[self class] conformsToProtocol:@protocol(UIAppearance)])
+			{
+				CGFloat gray = 220.0/255.0;
+				self.tintColor = [UIColor colorWithRed:gray green:gray blue:gray alpha:1];
+				self.highlightedTintColor = [UIColor colorWithRed:0 green:(CGFloat)157/255 blue:1 alpha:1];
+				self.borderColor = [UIColor darkGrayColor];
+				self.highlightedBorderColor = [UIColor whiteColor];
+				self.textColor = [UIColor blackColor];
+				self.highlightedTextColor = [UIColor whiteColor];
+				self.textShadowColor = [UIColor clearColor];
+				self.highlightedTextShadowColor = [UIColor darkGrayColor];
+			}
+			else
+			{
+				id appearance = [[self class] appearance];
+				self.tintColor = [appearance tintColor];
+				self.highlightedTintColor = [appearance highlightedTintColor];
+				self.borderColor = [appearance borderColor];
+				self.highlightedBorderColor = [appearance highlightedBorderColor];
+				self.textColor = [appearance textColor];
+				self.highlightedTextColor = [appearance highlightedTextColor];
+				self.textShadowColor = [appearance textShadowColor];
+				self.highlightedTextShadowColor = [appearance highlightedTextShadowColor];
+				self.gradientEnabled = [appearance isGradientEnabled];
+				self.glossy = [appearance isGlossy];
+				self.rightAccessoryImage = [appearance rightAccessoryImage];
+				self.rightHighlightedAccessoryImage = [appearance rightHighlightedAccessoryImage];
+				self.leftAccessoryImage = [appearance leftAccessoryImage];
+				self.leftHighlightedAccessoryImage = [appearance leftHighlightedAccessoryImage];
+			}
 			break;
 		}
 	}
@@ -149,8 +227,11 @@
 		
 		[self performDefaultInit];
 		
-		self.style = style;
+		_style = style;
+		if (_style != NVUIGradientButtonStyleDefault)
+			[self updateAccordingToStyle];
     }
+	
     return self;
 }
 
@@ -186,7 +267,7 @@
 		
 		[self performDefaultInit];
 		
-		self.style = NVUIGradientButtonStyleDefault;
+		_style = NVUIGradientButtonStyleDefault;
 	}
 	return self;
 }
@@ -399,6 +480,7 @@
 	}
 }
 
+
 - (void)setHighlightedAttributedText:(NSAttributedString *)highlightedAttributedText
 {
 	if (![highlightedAttributedText isEqualToAttributedString:_highlightedAttributedText])
@@ -425,6 +507,26 @@
 
 		if (self.state == UIControlStateNormal)
 			[self setNeedsDisplay];
+	}
+}
+
+
+- (void)setGradientEnabled:(NSInteger)gradientEnabled
+{
+	if (gradientEnabled != _gradientEnabled)
+	{
+		_gradientEnabled = gradientEnabled;
+		[self setNeedsDisplay];
+	}
+}
+
+
+- (void)setGlossy:(NSInteger)glossy
+{
+	if (glossy != _glossy)
+	{
+		_glossy = glossy;
+		[self setNeedsDisplay];
 	}
 }
 
@@ -756,13 +858,11 @@
 	[path addClip];
 	
 	// Draw background
+	CGPoint startPoint = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMinY(self.bounds));
+	CGPoint endPoint = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMaxY(self.bounds));
 	if (_gradientEnabled)
 	{
 		CGGradientRef gradient = [self newGradientAccordingToCurrentState];
-		CGFloat midX = CGRectGetMidX(self.bounds);
-		CGFloat botY = CGRectGetMaxY(self.bounds);
-		CGPoint startPoint = CGPointMake(midX, 0);
-		CGPoint endPoint = CGPointMake(midX, botY);
 		CGContextDrawLinearGradient(ctx, gradient, startPoint, endPoint, 0);
 		CGGradientRelease(gradient);
 	}
@@ -771,6 +871,15 @@
 		UIColor *tint = [self tintColorAccordingToCurrentState];
 		[tint set];
 		[path fill];
+	}
+	
+	// Glossy
+	if (_glossy)
+	{
+		CGGradientRef gradient = NVCGGradientCreate(_glossyStartColor.CGColor, _glossyEndColor.CGColor);
+		endPoint.y /= 2;
+		CGContextDrawLinearGradient(ctx, gradient, startPoint, endPoint, 0);
+		CGGradientRelease(gradient);
 	}
 	
 	// Draw left image
