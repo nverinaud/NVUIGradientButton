@@ -58,6 +58,28 @@ static CGGradientRef NVCGGradientCreate(CGColorRef startColor, CGColorRef endCol
 
 @implementation NVUIGradientButton
 
+#pragma mark - UIAppearance
+
++ (void)initialize
+{
+	if (self == NVUIGradientButton.class && [self conformsToProtocol:@protocol(UIAppearance)])
+	{
+		id appearance = [self appearance];
+		CGFloat gray = 220.0/255.0;
+		
+		[appearance setTintColor:[UIColor colorWithRed:gray green:gray blue:gray alpha:1]];
+		[appearance setHighlightedTintColor:[UIColor colorWithRed:0 green:(CGFloat)157/255 blue:1 alpha:1]];
+		[appearance setBorderColor:[UIColor darkGrayColor]];
+		[appearance setHighlightedBorderColor:[UIColor whiteColor]];
+		[appearance setTextColor:[UIColor blackColor]];
+		[appearance setHighlightedTextColor:[UIColor whiteColor]];
+		[appearance setTextShadowColor:[UIColor clearColor]];
+		[appearance setHighlightedTextShadowColor:[UIColor darkGrayColor]];
+		[appearance setGradientEnabled:YES];
+		[appearance setGlossy:NO];
+	}
+}
+
 #pragma mark - Memory Management
 
 #if !OBJC_ARC_ENABLED
@@ -111,9 +133,12 @@ static CGGradientRef NVCGGradientCreate(CGColorRef startColor, CGColorRef endCol
 	_titleLabel.minimumFontSize = 12.0;
 	_titleLabel.shadowOffset = CGSizeMake(0, -1);
 	
-	_gradientEnabled = YES;
+	if (![[self class] conformsToProtocol:@protocol(UIAppearance)])
+	{
+		_gradientEnabled = YES;
+		_glossy = NO;
+	}
 	
-	_glossy = NO;
 	_glossyStartColor = [[UIColor alloc] initWithWhite:1 alpha:0.35];
 	_glossyEndColor = [[UIColor alloc] initWithWhite:1 alpha:0.1];
 	
@@ -154,15 +179,36 @@ static CGGradientRef NVCGGradientCreate(CGColorRef startColor, CGColorRef endCol
 			
 		case NVUIGradientButtonStyleDefault:
 		{
-			CGFloat gray = 220.0/255.0;
-			self.tintColor = [UIColor colorWithRed:gray green:gray blue:gray alpha:1];
-			self.highlightedTintColor = [UIColor colorWithRed:0 green:(CGFloat)157/255 blue:1 alpha:1];
-			self.borderColor = [UIColor darkGrayColor];
-			self.highlightedBorderColor = [UIColor whiteColor];
-			self.textColor = [UIColor blackColor];
-			self.highlightedTextColor = [UIColor whiteColor];
-			self.textShadowColor = [UIColor clearColor];
-			self.highlightedTextShadowColor = [UIColor darkGrayColor];
+			if (![[self class] conformsToProtocol:@protocol(UIAppearance)])
+			{
+				CGFloat gray = 220.0/255.0;
+				self.tintColor = [UIColor colorWithRed:gray green:gray blue:gray alpha:1];
+				self.highlightedTintColor = [UIColor colorWithRed:0 green:(CGFloat)157/255 blue:1 alpha:1];
+				self.borderColor = [UIColor darkGrayColor];
+				self.highlightedBorderColor = [UIColor whiteColor];
+				self.textColor = [UIColor blackColor];
+				self.highlightedTextColor = [UIColor whiteColor];
+				self.textShadowColor = [UIColor clearColor];
+				self.highlightedTextShadowColor = [UIColor darkGrayColor];
+			}
+			else
+			{
+				id appearance = [[self class] appearance];
+				self.tintColor = [appearance tintColor];
+				self.highlightedTintColor = [appearance highlightedTintColor];
+				self.borderColor = [appearance borderColor];
+				self.highlightedBorderColor = [appearance highlightedBorderColor];
+				self.textColor = [appearance textColor];
+				self.highlightedTextColor = [appearance highlightedTextColor];
+				self.textShadowColor = [appearance textShadowColor];
+				self.highlightedTextShadowColor = [appearance highlightedTextShadowColor];
+				self.gradientEnabled = [appearance isGradientEnabled];
+				self.glossy = [appearance isGlossy];
+				self.rightAccessoryImage = [appearance rightAccessoryImage];
+				self.rightHighlightedAccessoryImage = [appearance rightHighlightedAccessoryImage];
+				self.leftAccessoryImage = [appearance leftAccessoryImage];
+				self.leftHighlightedAccessoryImage = [appearance leftHighlightedAccessoryImage];
+			}
 			break;
 		}
 	}
@@ -181,8 +227,11 @@ static CGGradientRef NVCGGradientCreate(CGColorRef startColor, CGColorRef endCol
 		
 		[self performDefaultInit];
 		
-		self.style = style;
+		_style = style;
+		if (_style != NVUIGradientButtonStyleDefault)
+			[self updateAccordingToStyle];
     }
+	
     return self;
 }
 
@@ -218,7 +267,7 @@ static CGGradientRef NVCGGradientCreate(CGColorRef startColor, CGColorRef endCol
 		
 		[self performDefaultInit];
 		
-		self.style = NVUIGradientButtonStyleDefault;
+		_style = NVUIGradientButtonStyleDefault;
 	}
 	return self;
 }
@@ -462,7 +511,7 @@ static CGGradientRef NVCGGradientCreate(CGColorRef startColor, CGColorRef endCol
 }
 
 
-- (void)setGradientEnabled:(BOOL)gradientEnabled
+- (void)setGradientEnabled:(NSInteger)gradientEnabled
 {
 	if (gradientEnabled != _gradientEnabled)
 	{
@@ -472,7 +521,7 @@ static CGGradientRef NVCGGradientCreate(CGColorRef startColor, CGColorRef endCol
 }
 
 
-- (void)setGlossy:(BOOL)glossy
+- (void)setGlossy:(NSInteger)glossy
 {
 	if (glossy != _glossy)
 	{
