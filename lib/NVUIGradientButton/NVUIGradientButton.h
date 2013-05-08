@@ -18,28 +18,29 @@ typedef NS_ENUM(NSUInteger, NVUIGradientButtonStyle)
 @interface NVUIGradientButton : UIControl
 
 @property (nonatomic, assign) NVUIGradientButtonStyle style;
-@property (nonatomic) CGFloat cornerRadius; // Default to 10.0
-@property (nonatomic) CGFloat borderWidth; // Default to 2.0
-@property (strong, nonatomic) UIColor *tintColor; // Default to gray
-@property (strong, nonatomic) UIColor *highlightedTintColor; // Default to nice blue
-@property (strong, nonatomic) UIColor *borderColor; // Default to darkGray
-@property (strong, nonatomic) UIColor *highlightedBorderColor; // Default to white
-@property (strong, nonatomic) UIColor *textColor; // Default to black
-@property (strong, nonatomic) UIColor *highlightedTextColor; // Default to white
-@property (strong, nonatomic) UIColor *textShadowColor; // Default to clear
-@property (strong, nonatomic) UIColor *highlightedTextShadowColor; // Default to darkGrey
-@property (copy, nonatomic) NSString *text;
-@property (copy, nonatomic) NSString *highlightedText; // Default to text
-@property (copy, nonatomic) NSString *disabledText; // Default to text
-@property (copy, nonatomic) NSAttributedString *attributedText;
-@property (copy, nonatomic) NSAttributedString *highlightedAttributedText; // Default to attributedText
-@property (copy, nonatomic) NSAttributedString *disabledAttributedText; // Default to attributedText
-@property (strong, nonatomic, readonly) UILabel *titleLabel;
-@property (nonatomic, getter = isGradientEnabled) BOOL gradientEnabled; // Default to YES, set to NO to draw flat color
-@property (nonatomic, strong) UIImage *rightAccessoryImage;
-@property (nonatomic, strong) UIImage *rightHighlightedAccessoryImage;
-@property (nonatomic, strong) UIImage *leftAccessoryImage;
-@property (nonatomic, strong) UIImage *leftHighlightedAccessoryImage;
+@property (nonatomic, assign) CGFloat cornerRadius; // default is 10.0
+@property (nonatomic, assign) CGFloat borderWidth; // default is 2.0
+@property (nonatomic, strong) UIColor *tintColor; // default is gray
+@property (nonatomic, strong) UIColor *highlightedTintColor; // default is nice blue
+@property (nonatomic, strong) UIColor *borderColor; // default is darkGray
+@property (nonatomic, strong) UIColor *highlightedBorderColor; // default is white
+@property (nonatomic, strong) UIColor *textColor; // default is black
+@property (nonatomic, strong) UIColor *highlightedTextColor; // default is white
+@property (nonatomic, strong) UIColor *textShadowColor; // default is clear
+@property (nonatomic, strong) UIColor *highlightedTextShadowColor; // default is darkGrey
+@property (nonatomic, copy) NSString *text;
+@property (nonatomic, copy) NSString *highlightedText; // default is text
+@property (nonatomic, copy) NSString *disabledText; // default is text
+@property (nonatomic, copy) NSAttributedString *attributedText;
+@property (nonatomic, copy) NSAttributedString *highlightedAttributedText; // default is attributedText
+@property (nonatomic, copy) NSAttributedString *disabledAttributedText; // default is attributedText
+@property (nonatomic, strong, readonly) UILabel *titleLabel;
+@property (nonatomic, assign, getter = isGradientEnabled) BOOL gradientEnabled; // default is YES, set to NO to draw flat color
+@property (nonatomic, assign, getter = isGlossy) BOOL glossy; // default is NO
+@property (nonatomic, strong) UIImage *rightAccessoryImage; // default is nil
+@property (nonatomic, strong) UIImage *rightHighlightedAccessoryImage; // default is nil
+@property (nonatomic, strong) UIImage *leftAccessoryImage; // default is nil
+@property (nonatomic, strong) UIImage *leftHighlightedAccessoryImage; // default is nil
 
 // Designated initializer
 - (id)initWithFrame:(CGRect)frame style:(NVUIGradientButtonStyle)style cornerRadius:(CGFloat)cornerRadius borderWidth:(CGFloat)borderWidth andText:(NSString *)text;
