@@ -64,7 +64,7 @@ static CGGradientRef NVCGGradientCreate(CGColorRef startColor, CGColorRef endCol
 {
 	if (self == NVUIGradientButton.class && [self conformsToProtocol:@protocol(UIAppearance)])
 	{
-		id appearance = [self appearance];
+		NVUIGradientButton *appearance = [self appearance];
 		CGFloat gray = 220.0/255.0;
 		
 		[appearance setTintColor:[UIColor colorWithRed:gray green:gray blue:gray alpha:1]];
@@ -75,7 +75,12 @@ static CGGradientRef NVCGGradientCreate(CGColorRef startColor, CGColorRef endCol
 		[appearance setHighlightedTextColor:[UIColor whiteColor]];
 		[appearance setTextShadowColor:[UIColor clearColor]];
 		[appearance setHighlightedTextShadowColor:[UIColor darkGrayColor]];
-		[appearance setGradientEnabled:YES];
+		
+		if ([UIView instancesRespondToSelector:@selector(tintColor)])
+			[appearance setGradientEnabled:NO];
+		else
+			[appearance setGradientEnabled:YES];
+		
 		[appearance setGlossy:NO];
 	}
 }
@@ -149,6 +154,11 @@ static CGGradientRef NVCGGradientCreate(CGColorRef startColor, CGColorRef endCol
 
 - (void)updateAccordingToStyle
 {
+	if ([UIView instancesRespondToSelector:@selector(tintColor)])
+		self.gradientEnabled = NO;
+	else
+		self.gradientEnabled = YES;
+	
 	switch (_style)
 	{
 		case NVUIGradientButtonStyleBlackOpaque:
@@ -193,7 +203,7 @@ static CGGradientRef NVCGGradientCreate(CGColorRef startColor, CGColorRef endCol
 			}
 			else
 			{
-				id appearance = [[self class] appearance];
+				NVUIGradientButton *appearance = [[self class] appearance];
 				self.tintColor = [appearance tintColor];
 				self.highlightedTintColor = [appearance highlightedTintColor];
 				self.borderColor = [appearance borderColor];

@@ -1,13 +1,14 @@
 # NVUIGradientButton
 
-A beautiful customizable iOS button with gradient.
+A beautiful customizable iOS button, flat on iOS 7, with gradient on earlier versions.
 
 ![A screenshot rendering NVUIGradient buttons](https://raw.github.com/nverinaud/NVUIGradientButton/master/images/screen.png)
 
 ## Requirements
 
 * You can use ARC or not, this library supports both
-* iOS 4+
+* iOS 5.1+
+* iOS 4 (should work but no longer officially supported)
 
 ## Usage
 

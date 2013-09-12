@@ -1,11 +1,11 @@
 Pod::Spec.new do |s|
   s.name         = "NVUIGradientButton"
-  s.version      = "1.5.0"
+  s.version      = "1.6.0"
   s.summary      = "A beautiful customizable iOS button with gradient."
   s.description  = <<-DESC
                     # NVUIGradientButton
 
-					A beautiful customizable iOS button with gradient.
+					A beautiful customizable iOS button, flat on iOS 7, with gradient on earlier versions.
 
 					![A screenshot rendering NVUIGradient buttons](https://raw.github.com/nverinaud/NVUIGradientButton/master/images/screen.png)
 
