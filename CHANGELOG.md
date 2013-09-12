@@ -1,5 +1,10 @@
 # Changelog
 
+## Release 1.6.0
+
+* FIX: make things work in Xcode 5 and iOS 7
+* UPDATE: the buttons are flat by default on iOS 7
+
 ## Release 1.5.0
 
 * NEW: a nice glossy effect may be set using the `glossy` property
