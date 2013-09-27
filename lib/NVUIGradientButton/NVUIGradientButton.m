@@ -844,6 +844,13 @@ static CGGradientRef NVCGGradientCreate(CGColorRef startColor, CGColorRef endCol
 	return gradient;
 }
 
+#pragma mark - Layout updating
+
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    [self setNeedsDisplay];
+}
 
 #pragma mark - Drawing
 
