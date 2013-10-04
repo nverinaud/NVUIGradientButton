@@ -1,5 +1,10 @@
 # Changelog
 
+## Release 1.6.1
+
+* FIX: layout update when device orientation changed (thanks to [Yassir Barchi](https://github.com/yacir))
+* UPDATE: the sample app is more beautiful :P
+
 ## Release 1.6.0
 
 * FIX: make things work in Xcode 5 and iOS 7

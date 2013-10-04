@@ -2,7 +2,7 @@
 
 A beautiful customizable iOS button, flat on iOS 7, with gradient on earlier versions.
 
-![A screenshot rendering NVUIGradient buttons](https://raw.github.com/nverinaud/NVUIGradientButton/master/images/screen.png)
+![A screenshot rendering NVUIGradient buttons](https://raw.github.com/nverinaud/NVUIGradientButton/master/images/screen1-6-1.png)
 
 ## Requirements
 
