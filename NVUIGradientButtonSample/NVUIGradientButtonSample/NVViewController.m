@@ -11,6 +11,7 @@
 @interface NVViewController ()
 
 @property (strong, nonatomic) NVUIGradientButton *attributedStringButton; // created programmatically
+@property (strong, nonatomic) IBOutlet UIView *container;
 
 @end
 
@@ -87,6 +88,14 @@
 	self.dynamicButton.textShadowColor = [UIColor darkGrayColor];
 	
 	[self sliderValueChanged];
+}
+
+
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+		[UIView animateWithDuration:duration animations:^{
+			self.container.alpha = UIInterfaceOrientationIsPortrait(toInterfaceOrientation);
+		}];
 }
 
 
