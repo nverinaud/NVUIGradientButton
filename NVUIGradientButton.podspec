@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "NVUIGradientButton"
-  s.version      = "1.6.1"
+  s.version      = "2.0.0"
   s.summary      = "A beautiful customizable iOS button with gradient."
   s.description  = <<-DESC
                     # NVUIGradientButton
@@ -11,8 +11,8 @@ Pod::Spec.new do |s|
 
 					## Requirements
 
-					* You can use ARC or not, this library supports both
-					* iOS 4+
+					* ARC required (you're using it right ?!)
+					* iOS 6.0+
 
 					## Usage
 
@@ -24,12 +24,12 @@ Pod::Spec.new do |s|
 
 					## License
 
-					Copyright (c) 2013 [Nicolas VERINAUD](http://www.nverinaud.com). Released under the MIT license.
+					Copyright (c) 2013-2016 [Nicolas VERINAUD](http://www.nverinaud.com). Released under the MIT license.
                     DESC
   s.homepage     = "https://github.com/nverinaud/NVUIGradientButton"
   s.license      = 'MIT'
   s.author       = { "Nicolas VERINAUD" => "n.verinaud@gmail.com" }
-  s.source       = { :git => "https://github.com/nverinaud/NVUIGradientButton.git", :tag => "v1.6.1" }
+  s.source       = { :git => "https://github.com/nverinaud/NVUIGradientButton.git", :tag => "v2.0.0" }
   s.platform     = :ios
   s.source_files = 'lib', 'lib/**/*.{h,m}'
 

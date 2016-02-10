@@ -7,6 +7,8 @@
 
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 typedef NS_ENUM(NSUInteger, NVUIGradientButtonStyle)
 {
 	NVUIGradientButtonStyleDefault = 1, // use the appearance proxy if available
@@ -31,9 +33,9 @@ typedef NS_ENUM(NSUInteger, NVUIGradientButtonStyle)
 @property (nonatomic, copy) NSString *text;
 @property (nonatomic, copy) NSString *highlightedText; // default is text
 @property (nonatomic, copy) NSString *disabledText; // default is text
-@property (nonatomic, copy) NSAttributedString *attributedText;
-@property (nonatomic, copy) NSAttributedString *highlightedAttributedText; // default is attributedText
-@property (nonatomic, copy) NSAttributedString *disabledAttributedText; // default is attributedText
+@property (nonatomic, copy, nullable) NSAttributedString *attributedText;
+@property (nonatomic, copy, nullable) NSAttributedString *highlightedAttributedText; // default is attributedText
+@property (nonatomic, copy, nullable) NSAttributedString *disabledAttributedText; // default is attributedText
 @property (nonatomic, strong, readonly) UILabel *titleLabel;
 @property (nonatomic, assign, getter = isGradientEnabled) NSInteger gradientEnabled UI_APPEARANCE_SELECTOR; // default is YES, set to NO to draw flat color, UIAppearance does not support BOOL :-(
 @property (nonatomic, assign, getter = isGlossy) NSInteger glossy UI_APPEARANCE_SELECTOR; // default is NO, UIAppearance does not support BOOL :-(
@@ -42,11 +44,15 @@ typedef NS_ENUM(NSUInteger, NVUIGradientButtonStyle)
 @property (nonatomic, strong) UIImage *leftAccessoryImage UI_APPEARANCE_SELECTOR; // default is nil
 @property (nonatomic, strong) UIImage *leftHighlightedAccessoryImage UI_APPEARANCE_SELECTOR; // default is nil
 
-// Designated initializer
-- (id)initWithFrame:(CGRect)frame style:(NVUIGradientButtonStyle)style cornerRadius:(CGFloat)cornerRadius borderWidth:(CGFloat)borderWidth andText:(NSString *)text;
-// Convenient initializers
-- (id)initWithFrame:(CGRect)frame cornerRadius:(CGFloat)cornerRadius borderWidth:(CGFloat)borderWidth andText:(NSString *)text;
-- (id)initWithFrame:(CGRect)frame style:(NVUIGradientButtonStyle)style;
+- (instancetype)initWithFrame:(CGRect)frame
+						style:(NVUIGradientButtonStyle)style
+				 cornerRadius:(CGFloat)cornerRadius
+				  borderWidth:(CGFloat)borderWidth
+					  andText:(NSString *)text NS_DESIGNATED_INITIALIZER;
+- (nullable instancetype)initWithCoder:(NSCoder *)aDecoder NS_DESIGNATED_INITIALIZER;
+
+- (instancetype)initWithFrame:(CGRect)frame cornerRadius:(CGFloat)cornerRadius borderWidth:(CGFloat)borderWidth andText:(NSString *)text;
+- (instancetype)initWithFrame:(CGRect)frame style:(NVUIGradientButtonStyle)style;
 
 // Convenience for configuration depending on states
 - (void)setTintColor:(UIColor *)tintColor forState:(UIControlState)state;
@@ -54,8 +60,10 @@ typedef NS_ENUM(NSUInteger, NVUIGradientButtonStyle)
 - (void)setTextColor:(UIColor *)textColor forState:(UIControlState)state;
 - (void)setTextShadowColor:(UIColor *)textShadowColor forState:(UIControlState)state;
 - (void)setText:(NSString *)text forState:(UIControlState)state;
-- (void)setAttributedText:(NSAttributedString *)attributedText forState:(UIControlState)state;
+- (void)setAttributedText:(nullable NSAttributedString *)attributedText forState:(UIControlState)state;
 - (void)setRightAccessoryImage:(UIImage *)rightAccessoryImage forState:(UIControlState)state;
 - (void)setLeftAccessoryImage:(UIImage *)leftAccessoryImage forState:(UIControlState)state;
 
 @end
+
+NS_ASSUME_NONNULL_END

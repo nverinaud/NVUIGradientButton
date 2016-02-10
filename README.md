@@ -6,9 +6,8 @@ A beautiful customizable iOS button, flat on iOS 7, with gradient on earlier ver
 
 ## Requirements
 
-* You can use ARC or not, this library supports both
-* iOS 5.1+
-* iOS 4 (should work but no longer officially supported)
+* ARC required (you're using it right ?!)
+* iOS 6.0+
 
 ## Usage
 
@@ -20,4 +19,4 @@ For more examples, have a look at the `NVUIGradientButtonSample` project.
 
 ## License
 
-Copyright (c) 2013 [Nicolas VERINAUD](http://www.nverinaud.com). Released under the MIT license.
+Copyright (c) 2013-2016 [Nicolas VERINAUD](http://www.nverinaud.com). Released under the MIT license.

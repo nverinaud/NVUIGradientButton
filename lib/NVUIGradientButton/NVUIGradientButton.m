@@ -7,29 +7,14 @@
 
 #import "NVUIGradientButton.h"
 
-#ifdef __has_feature
-	#define OBJC_ARC_ENABLED __has_feature(objc_arc)
-#else
-	#define OBJC_ARC_ENABLED 0
-#endif
-
+NS_ASSUME_NONNULL_BEGIN
 
 static CGGradientRef NVCGGradientCreate(CGColorRef startColor, CGColorRef endColor)
 {
 	CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
     CGFloat locations[] = { 0.0, 1.0 };
-#if OBJC_ARC_ENABLED
     NSArray *colors = @[(__bridge id) startColor, (__bridge id) endColor];
-#else
-	NSArray *colors = @[(id)startColor, (id)endColor];
-#endif
-	
-#if OBJC_ARC_ENABLED
     CGGradientRef gradient = CGGradientCreateWithColors(colorSpace, (__bridge CFArrayRef) colors, locations);
-#else
-	CGGradientRef gradient = CGGradientCreateWithColors(colorSpace, (CFArrayRef) colors, locations);
-#endif
-	
 	CGColorSpaceRelease(colorSpace);
 	
 	return gradient;
@@ -37,6 +22,7 @@ static CGGradientRef NVCGGradientCreate(CGColorRef startColor, CGColorRef endCol
 
 
 @interface NVUIGradientButton ()
+
 - (void)performDefaultInit;
 - (void)updateAccordingToStyle;
 - (BOOL)isHighlightedOrSelected;
@@ -53,6 +39,7 @@ static CGGradientRef NVCGGradientCreate(CGColorRef startColor, CGColorRef endCol
 // Glossy additions
 @property (nonatomic, strong) UIColor *glossyStartColor;
 @property (nonatomic, strong) UIColor *glossyEndColor;
+
 @end
 
 
@@ -85,37 +72,6 @@ static CGGradientRef NVCGGradientCreate(CGColorRef startColor, CGColorRef endCol
 	}
 }
 
-#pragma mark - Memory Management
-
-#if !OBJC_ARC_ENABLED
-- (void)dealloc
-{
-	[_tintColor release];
-	[_highlightedTintColor release];
-	[_borderColor release];
-	[_highlightedBorderColor release];
-	[_textColor release];
-	[_highlightedTextColor release];
-	[_textShadowColor release];
-	[_highlightedTextShadowColor release];
-	[_text release];
-	[_highlightedText release];
-	[_disabledText release];
-	[_attributedText release];
-	[_highlightedAttributedText release];
-	[_disabledAttributedText release];
-	[_titleLabel release];
-	[_rightAccessoryImage release];
-	[_rightHighlightedAccessoryImage release];
-	[_leftAccessoryImage release];
-	[_leftHighlightedAccessoryImage release];
-	[_glossyStartColor release];
-	[_glossyEndColor release];
-	
-	[super dealloc];
-}
-#endif
-
 #pragma mark - Creation
 
 #define NVUIGradientButtonDefaultCorderRadius	10.0
@@ -131,11 +87,12 @@ static CGGradientRef NVCGGradientCreate(CGColorRef startColor, CGColorRef endCol
 	
 	// Label
 	_titleLabel = [[UILabel alloc] init];
-	_titleLabel.textAlignment = UITextAlignmentCenter;
-	_titleLabel.lineBreakMode = UILineBreakModeMiddleTruncation;
+	_titleLabel.textAlignment = NSTextAlignmentCenter;
+	_titleLabel.lineBreakMode = NSLineBreakByTruncatingMiddle;
 	_titleLabel.numberOfLines = 0;
 	_titleLabel.font = [UIFont boldSystemFontOfSize:15.0];
-	_titleLabel.minimumFontSize = 12.0;
+	_titleLabel.adjustsFontSizeToFitWidth = YES;
+	_titleLabel.minimumScaleFactor = 0.5;
 	_titleLabel.shadowOffset = CGSizeMake(0, -1);
 	
 	if (![[self class] conformsToProtocol:@protocol(UIAppearance)])
@@ -226,9 +183,14 @@ static CGGradientRef NVCGGradientCreate(CGColorRef startColor, CGColorRef endCol
 
 #pragma mark Designated initializer
 
-- (id)initWithFrame:(CGRect)frame style:(NVUIGradientButtonStyle)style cornerRadius:(CGFloat)cornerRadius borderWidth:(CGFloat)borderWidth andText:(NSString *)text
+- (instancetype)initWithFrame:(CGRect)frame
+						style:(NVUIGradientButtonStyle)style
+				 cornerRadius:(CGFloat)cornerRadius
+				  borderWidth:(CGFloat)borderWidth
+					  andText:(NSString *)text
 {
 	self = [super initWithFrame:frame];
+	
     if (self)
 	{
 		_cornerRadius = cornerRadius;
@@ -239,7 +201,9 @@ static CGGradientRef NVCGGradientCreate(CGColorRef startColor, CGColorRef endCol
 		
 		_style = style;
 		if (_style != NVUIGradientButtonStyleDefault)
+		{
 			[self updateAccordingToStyle];
+		}
     }
 	
     return self;
@@ -248,28 +212,44 @@ static CGGradientRef NVCGGradientCreate(CGColorRef startColor, CGColorRef endCol
 
 #pragma mark Convenient initializers
 
-- (id)initWithFrame:(CGRect)frame cornerRadius:(CGFloat)cornerRadius borderWidth:(CGFloat)borderWidth andText:(NSString *)text
+- (instancetype)initWithFrame:(CGRect)frame
+				 cornerRadius:(CGFloat)cornerRadius
+				  borderWidth:(CGFloat)borderWidth
+					  andText:(NSString *)text
 {
-	return [self initWithFrame:frame style:NVUIGradientButtonStyleDefault cornerRadius:cornerRadius borderWidth:borderWidth andText:text];
+	return [self initWithFrame:frame
+						 style:NVUIGradientButtonStyleDefault
+				  cornerRadius:cornerRadius
+				   borderWidth:borderWidth
+					   andText:text];
 }
 
 
-- (id)initWithFrame:(CGRect)frame style:(NVUIGradientButtonStyle)style
+- (instancetype)initWithFrame:(CGRect)frame style:(NVUIGradientButtonStyle)style
 {
-	return [self initWithFrame:frame style:style cornerRadius:NVUIGradientButtonDefaultCorderRadius borderWidth:NVUIGradientButtonDefaultBorderWidth andText:nil];
+	return [self initWithFrame:frame
+						 style:style
+				  cornerRadius:NVUIGradientButtonDefaultCorderRadius
+				   borderWidth:NVUIGradientButtonDefaultBorderWidth
+					   andText:@""];
 }
 
 #pragma mark Overriden initializers
 
-- (id)initWithFrame:(CGRect)frame
+- (instancetype)initWithFrame:(CGRect)frame
 {
-    return [self initWithFrame:frame style:NVUIGradientButtonStyleDefault cornerRadius:NVUIGradientButtonDefaultCorderRadius borderWidth:NVUIGradientButtonDefaultBorderWidth andText:nil];
+    return [self initWithFrame:frame
+						 style:NVUIGradientButtonStyleDefault
+				  cornerRadius:NVUIGradientButtonDefaultCorderRadius
+				   borderWidth:NVUIGradientButtonDefaultBorderWidth
+					   andText:@""];
 }
 
 
-- (id)initWithCoder:(NSCoder *)aDecoder
+- (nullable instancetype)initWithCoder:(NSCoder *)aDecoder
 {
 	self = [super initWithCoder:aDecoder];
+	
 	if (self)
 	{
 		_cornerRadius = NVUIGradientButtonDefaultCorderRadius;
@@ -279,6 +259,7 @@ static CGGradientRef NVCGGradientCreate(CGColorRef startColor, CGColorRef endCol
 		
 		_style = NVUIGradientButtonStyleDefault;
 	}
+	
 	return self;
 }
 
@@ -299,12 +280,7 @@ static CGGradientRef NVCGGradientCreate(CGColorRef startColor, CGColorRef endCol
 {
 	if (tintColor != _tintColor)
 	{
-#if !OBJC_ARC_ENABLED
-		[_tintColor release];
-		_tintColor = [tintColor retain];
-#else
 		_tintColor = tintColor;
-#endif
 		
 		if (self.state == UIControlStateNormal)
 			[self setNeedsDisplay];
@@ -316,12 +292,7 @@ static CGGradientRef NVCGGradientCreate(CGColorRef startColor, CGColorRef endCol
 {
 	if (highlightedTintColor != _highlightedTintColor)
 	{
-#if !OBJC_ARC_ENABLED
-		[_highlightedTintColor release];
-		_highlightedTintColor = [highlightedTintColor retain];
-#else
 		_highlightedTintColor = highlightedTintColor;
-#endif
 		
 		if ([self isHighlightedOrSelected])
 			[self setNeedsDisplay];
@@ -333,12 +304,7 @@ static CGGradientRef NVCGGradientCreate(CGColorRef startColor, CGColorRef endCol
 {
 	if (borderColor != _borderColor)
 	{
-#if !OBJC_ARC_ENABLED
-		[_borderColor release];
-		_borderColor = [borderColor retain];
-#else
 		_borderColor = borderColor;
-#endif
 		
 		if (self.state == UIControlStateNormal)
 			[self setNeedsDisplay];
@@ -350,12 +316,7 @@ static CGGradientRef NVCGGradientCreate(CGColorRef startColor, CGColorRef endCol
 {
 	if (highlightedBorderColor != _highlightedBorderColor)
 	{
-#if !OBJC_ARC_ENABLED
-		[_highlightedBorderColor release];
-		_highlightedBorderColor = [highlightedBorderColor retain];
-#else
 		_highlightedBorderColor = highlightedBorderColor;
-#endif
 		
 		if ([self isHighlightedOrSelected])
 			[self setNeedsDisplay];
@@ -367,12 +328,7 @@ static CGGradientRef NVCGGradientCreate(CGColorRef startColor, CGColorRef endCol
 {
 	if (textColor != _textColor)
 	{
-#if !OBJC_ARC_ENABLED
-		[_textColor release];
-		_textColor = [textColor retain];
-#else
 		_textColor = textColor;
-#endif
 		
 		if (self.state == UIControlStateNormal)
 			[self setNeedsDisplay];
@@ -384,12 +340,7 @@ static CGGradientRef NVCGGradientCreate(CGColorRef startColor, CGColorRef endCol
 {
 	if (highlightedTextColor != _highlightedTextColor)
 	{
-#if !OBJC_ARC_ENABLED
-		[_highlightedTextColor release];
-		_highlightedTextColor = [highlightedTextColor retain];
-#else
 		_highlightedTextColor = highlightedTextColor;
-#endif
 		
 		if ([self isHighlightedOrSelected])
 			[self setNeedsDisplay];
@@ -401,12 +352,7 @@ static CGGradientRef NVCGGradientCreate(CGColorRef startColor, CGColorRef endCol
 {
 	if (textShadowColor != _textShadowColor)
 	{
-#if !OBJC_ARC_ENABLED
-		[_textShadowColor release];
-		_textShadowColor = [textShadowColor retain];
-#else
 		_textShadowColor = textShadowColor;
-#endif
 		
 		if (self.state == UIControlStateNormal)
 			[self setNeedsDisplay];
@@ -418,12 +364,7 @@ static CGGradientRef NVCGGradientCreate(CGColorRef startColor, CGColorRef endCol
 {
 	if (highlightedTextShadowColor != _highlightedTextShadowColor)
 	{
-#if !OBJC_ARC_ENABLED
-		[_highlightedTextShadowColor release];
-		_highlightedTextShadowColor = [highlightedTextShadowColor retain];
-#else
 		_highlightedTextShadowColor = highlightedTextShadowColor;
-#endif
 		
 		if ([self isHighlightedOrSelected])
 			[self setNeedsDisplay];
@@ -435,9 +376,6 @@ static CGGradientRef NVCGGradientCreate(CGColorRef startColor, CGColorRef endCol
 {
 	if (![text isEqualToString:_text])
 	{
-#if !OBJC_ARC_ENABLED
-		[_text release];
-#endif
 		_text = [text copy];
 		
 		if (self.state == UIControlStateNormal)
@@ -450,9 +388,6 @@ static CGGradientRef NVCGGradientCreate(CGColorRef startColor, CGColorRef endCol
 {
 	if (![highlightedText isEqualToString:_highlightedText])
 	{
-#if !OBJC_ARC_ENABLED
-		[_highlightedText release];
-#endif
 		_highlightedText = [highlightedText copy];
 		
 		if ([self isHighlightedOrSelected])
@@ -465,9 +400,6 @@ static CGGradientRef NVCGGradientCreate(CGColorRef startColor, CGColorRef endCol
 {
 	if (![disabledText isEqualToString:_disabledText])
 	{
-#if !OBJC_ARC_ENABLED
-		[_disabledText release];
-#endif
 		_disabledText = [disabledText copy];
 		
 		if (self.state & UIControlStateDisabled)
@@ -476,13 +408,10 @@ static CGGradientRef NVCGGradientCreate(CGColorRef startColor, CGColorRef endCol
 }
 
 
-- (void)setAttributedText:(NSAttributedString *)attributedText
+- (void)setAttributedText:(nullable NSAttributedString *)attributedText
 {
 	if (![attributedText isEqualToAttributedString:_attributedText])
 	{
-#if !OBJC_ARC_ENABLED
-		[_attributedText release];
-#endif
 		_attributedText = [attributedText copy];
 
 		if (self.state == UIControlStateNormal)
@@ -491,13 +420,10 @@ static CGGradientRef NVCGGradientCreate(CGColorRef startColor, CGColorRef endCol
 }
 
 
-- (void)setHighlightedAttributedText:(NSAttributedString *)highlightedAttributedText
+- (void)setHighlightedAttributedText:(nullable NSAttributedString *)highlightedAttributedText
 {
 	if (![highlightedAttributedText isEqualToAttributedString:_highlightedAttributedText])
 	{
-#if !OBJC_ARC_ENABLED
-		[_highlightedAttributedText release];
-#endif
 		_highlightedAttributedText = [highlightedAttributedText copy];
 
 		if (self.state == UIControlStateNormal)
@@ -506,13 +432,10 @@ static CGGradientRef NVCGGradientCreate(CGColorRef startColor, CGColorRef endCol
 }
 
 
-- (void)setDisabledAttributedText:(NSAttributedString *)disabledAttributedText
+- (void)setDisabledAttributedText:(nullable NSAttributedString *)disabledAttributedText
 {
 	if (![disabledAttributedText isEqualToAttributedString:_disabledAttributedText])
 	{
-#if !OBJC_ARC_ENABLED
-		[_disabledAttributedText release];
-#endif
 		_disabledAttributedText = [disabledAttributedText copy];
 
 		if (self.state == UIControlStateNormal)
@@ -545,12 +468,7 @@ static CGGradientRef NVCGGradientCreate(CGColorRef startColor, CGColorRef endCol
 {
 	if (rightAccessoryImage != _rightAccessoryImage)
 	{
-#if !OBJC_ARC_ENABLED
-		[_rightAccessoryImage release];
-		_rightAccessoryImage = [rightAccessoryImage retain];
-#else
 		_rightAccessoryImage = rightAccessoryImage;
-#endif
 		
 		if (self.state == UIControlStateNormal)
 			[self setNeedsDisplay];
@@ -562,12 +480,7 @@ static CGGradientRef NVCGGradientCreate(CGColorRef startColor, CGColorRef endCol
 {
 	if (rightHighlightedAccessoryImage != _rightHighlightedAccessoryImage)
 	{
-#if !OBJC_ARC_ENABLED
-		[_rightHighlightedAccessoryImage release];
-		_rightHighlightedAccessoryImage = [rightHighlightedAccessoryImage retain];
-#else
 		_rightHighlightedAccessoryImage = rightHighlightedAccessoryImage;
-#endif
 		
 		if ([self isHighlightedOrSelected])
 			[self setNeedsDisplay];
@@ -579,12 +492,7 @@ static CGGradientRef NVCGGradientCreate(CGColorRef startColor, CGColorRef endCol
 {
 	if (leftAccessoryImage != _leftAccessoryImage)
 	{
-#if !OBJC_ARC_ENABLED
-		[_leftAccessoryImage release];
-		_leftAccessoryImage = [leftAccessoryImage retain];
-#else
 		_leftAccessoryImage = leftAccessoryImage;
-#endif
 		
 		if (self.state == UIControlStateNormal)
 			[self setNeedsDisplay];
@@ -596,12 +504,7 @@ static CGGradientRef NVCGGradientCreate(CGColorRef startColor, CGColorRef endCol
 {
 	if (leftHighlightedAccessoryImage != _leftHighlightedAccessoryImage)
 	{
-#if !OBJC_ARC_ENABLED
-		[_leftHighlightedAccessoryImage release];
-		_leftHighlightedAccessoryImage = [leftHighlightedAccessoryImage retain];
-#else
 		_leftHighlightedAccessoryImage = leftHighlightedAccessoryImage;
-#endif
 		
 		if ([self isHighlightedOrSelected])
 			[self setNeedsDisplay];
@@ -670,7 +573,7 @@ static CGGradientRef NVCGGradientCreate(CGColorRef startColor, CGColorRef endCol
 }
 
 
-- (void)setAttributedText:(NSAttributedString *)attributedText forState:(UIControlState)state
+- (void)setAttributedText:(nullable NSAttributedString *)attributedText forState:(UIControlState)state
 {
 	if (state == UIControlStateNormal)
 		self.attributedText = attributedText;
@@ -763,7 +666,7 @@ static CGGradientRef NVCGGradientCreate(CGColorRef startColor, CGColorRef endCol
 }
 
 
-- (NSAttributedString *)attributedTextAccordingToCurrentState
+- (nullable NSAttributedString *)attributedTextAccordingToCurrentState
 {
 	NSAttributedString *attributedText = _attributedText;
 
@@ -960,7 +863,7 @@ static CGGradientRef NVCGGradientCreate(CGColorRef startColor, CGColorRef endCol
 
 #pragma mark - Touch Handling
 
-- (BOOL)beginTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event
+- (BOOL)beginTrackingWithTouch:(UITouch *)touch withEvent:(nullable UIEvent *)event
 {
 	self.highlighted = YES;
 	[self setNeedsDisplay];
@@ -968,7 +871,7 @@ static CGGradientRef NVCGGradientCreate(CGColorRef startColor, CGColorRef endCol
 }
 
 
-- (BOOL)continueTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event
+- (BOOL)continueTrackingWithTouch:(UITouch *)touch withEvent:(nullable UIEvent *)event
 {
 	self.highlighted = [self isTouchInside];
 	[self setNeedsDisplay];
@@ -976,7 +879,7 @@ static CGGradientRef NVCGGradientCreate(CGColorRef startColor, CGColorRef endCol
 }
 
 
-- (void)endTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event
+- (void)endTrackingWithTouch:(nullable UITouch *)touch withEvent:(nullable UIEvent *)event
 {
 	[super endTrackingWithTouch:touch withEvent:event];
 	self.highlighted = NO;
@@ -984,7 +887,7 @@ static CGGradientRef NVCGGradientCreate(CGColorRef startColor, CGColorRef endCol
 }
 
 
-- (void)cancelTrackingWithEvent:(UIEvent *)event
+- (void)cancelTrackingWithEvent:(nullable UIEvent *)event
 {
 	[super cancelTrackingWithEvent:event];
 	self.highlighted = NO;
@@ -1000,7 +903,7 @@ static CGGradientRef NVCGGradientCreate(CGColorRef startColor, CGColorRef endCol
 }
 
 
-- (NSString *)accessibilityLabel
+- (nullable NSString *)accessibilityLabel
 {
     return [self textAccordingToCurrentState];
 }
@@ -1020,10 +923,12 @@ static CGGradientRef NVCGGradientCreate(CGColorRef startColor, CGColorRef endCol
 }
 
 
-- (NSString *)accessibilityHint
+- (nullable NSString *)accessibilityHint
 {
 	return [self textAccordingToCurrentState];
 }
 
 
 @end
+
+NS_ASSUME_NONNULL_END

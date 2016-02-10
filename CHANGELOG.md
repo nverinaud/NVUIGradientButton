@@ -1,5 +1,12 @@
 # Changelog
 
+## Release 2.0.0
+
+* FIX: build errors & warnings in Xcode 7
+* UPDATE: modernize the project with null specifiers
+* BREAKING CHANGE: ARC is no longer supported
+* BREAKING CHANGE: Drop support of iOS 4 and 5, minimum supported iOS version is 6
+
 ## Release 1.6.1
 
 * FIX: layout update when device orientation changed (thanks to [Yassir Barchi](https://github.com/yacir))
